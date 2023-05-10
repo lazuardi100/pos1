@@ -48,7 +48,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="inputName">Name</label>
-                                        <input type="text" name="name" id="inputName" value="{{($data != null) ? $data->name : ''}}" class="form-control">
+                                        <input type="text" name="name" id="inputName" value="{{($data != null) ? $data->title : ''}}" class="form-control">
                                     </div>
                                     <div class="form-group">
                                         <label for="inputName">Code</label>

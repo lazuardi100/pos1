@@ -17,15 +17,12 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th style="width: 10px">#</th>
                     <th>
                         <span class="info-box-icon"><i class="far fa-image"></i></span>
                     </th>
                     <th>Name</th>
                     <th>SKU</th>
-                    <th>Stock</th>
                     <th>Price</th>
-                    <th>Categories</th>
                     <th>variant</th>
                     <th>code</th>
                     <th>Action</th>
@@ -36,38 +33,35 @@
                 {{-- {{$i=1}}--}}
                 @foreach($products as $product)
                 <tr>
-                    <td>{{$loop->iteration}}</td>
-                    <td><img src="{{$product->images[0]->src}}" width="50" height="50"></td>
-                    <td>{{$product->name}}</td>
-                    <td>{{($product->sku == '') ? '-' : $product->sku}}</td>
-                    <td>{{($product->stock_status == 'instock') ? 'in stock' : 'Out of stock'}}</td>
-                    <?php
-                    $harga = (double) $product->price * (double)8500;
-                    $rupiah=number_format($harga,2,',','.');
-                    ?>
-                    <td>Rp.{{$rupiah }}</td>
-                    {{-- <td>{!! $product->price_html !!}</td>--}}
+                    <td><img src="{{$product->image->src}}" width="50" height="50"></td>
+                    <td>{{$product->title}}</td>
                     <td>
-                        @foreach($product->categories as $category)
-                        {{$category->name}},
+                        @foreach($product->variants as $variant)
+                            {{$variant->sku}}, 
                         @endforeach
                     </td>
-                    <td>{{$product->type}}</td>
+                    <?php
+                    $temp_prices = [];
+                    foreach ($product->variants as $variant) {
+                        $harga = (double) $variant->price * (double)8500;
+                        $rupiah=number_format($harga,2,',','.');
+                        array_push($temp_prices, $rupiah);
+                    }
+                    ?>
                     <td>
-                        {!! DNS1D::getBarcodeHTML('dwqdqw', "C128",1.4,22) !!}
-
-{{--                    @foreach($product->tags as $tag)--}}
-{{--                        {{$tag->name}},--}}
-{{--                        @endforeach--}}
-{{--                    </td>--}}
+                        @foreach ($temp_prices as $price)
+                            Rp. {{$price}}, 
+                        @endforeach
+                    </td>
+                    <td>
+                        @foreach ($product->variants as $variant)
+                            {{$variant->title}},
+                        @endforeach
+                    </td>
+                    <td>
+                        {!! DNS1D::getBarcodeHTML($product->id, "C128",1.4,22) !!}
                     <td>
                         <div class="btn-group">
-{{--                            <a href="{{route('printLabel',[$product->type,$product->id])}}" class="btn btn-info">--}}
-{{--                                <i class="fas fa-file"></i>--}}
-{{--                            </a>--}}
-{{--                            <button type="button" class="btn btn-info">--}}
-{{--                                <i class="fas fa-image"></i>--}}
-{{--                            </button>--}}
                             <a href="{{route('products.edit',$product->id)}}" type="button" class="btn btn-warning">
                                 <i class="fas fa-edit"></i>
                             </a>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SyncController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,7 +36,7 @@ Route::get('/report', [\App\Http\Controllers\HomeController::class, 'report']);
 Route::get('/showAttribute', [\App\Http\Controllers\HomeController::class, 'showAttribute']);
 
 Route::middleware(['auth'])->group(function () {
-
+    Route::get('/sync', [SyncController::class, 'sync'])->name('sync');
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
     Route::get('/pos', [App\Http\Controllers\HomeController::class, 'pos'])->name('pos');
 

@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ShopifyHelper;
 use App\Models\Label;
 use App\Models\Product;
 use AshAllenDesign\LaravelExchangeRates\Classes\ExchangeRate;
 use Carbon\Carbon;
 use Dflydev\DotAccessData\Data;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use PhpExcelReader;
 use Spreadsheet_Excel_Reader;
 
@@ -150,39 +154,33 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-//
-//        $exchangeRates = new ExchangeRate();
-//        return $exchangeRates->convert(100, 'GBP', 'EUR', Carbon::now());
-
-        //        dd($this->woocommerce()->get('products'));
         if ($request->page == null || $request->page == '') {
             $page = '1';
         } else {
             $page = $request->page;
         }
 
-        $woocommerce = $this->woocommerce();
-
-        $array = $woocommerce->get('products?page=' . $page);
-
-        $a = $woocommerce->http->getResponse();
-        $headers = $a->getHeaders();
-        $totalPages = $headers['x-wp-totalpages'];
-        $total = $headers['x-wp-total'];
-        // $current_page = '1';
-
-        $array = new Paginator($array, $total, '10', $page, [
+        // check cache
+        $shopify = new ShopifyHelper();
+        $products = $shopify->getProducts();
+        
+        // paginate products
+        $array = $this->paginate($products, 10, $page, [
             'path' => $request->url(),
             'query' => $request->query(),
         ]);
 
-        // dd($array);
-        //        dd($data);
-        view()->share([
+        return view('dashboard.products.index', [
             'products' => $array,
             'convert' => $this->convertUSD()
         ]);
-        return view('dashboard.products.index');
+    }
+
+    private function paginate($items, $perPage = 5, $page = null, $options = [])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
 
     /**
@@ -407,9 +405,8 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $woocommerce = $this->woocommerce();
-
-        $data = $woocommerce->get('products/'.$id);
+        $shopify = new ShopifyHelper();
+        $product = $shopify->getProduct($id);
 
         $sql = Product::where('api_product_api','=',$id)->first();
 
@@ -420,7 +417,7 @@ class ProductController extends Controller
         view()->share([
             'categories' => $categories,
             'tags' => $tags,
-            'data' => $data,
+            'data' => $product,
             'sql' => $sql
         ]);
         return view('dashboard.products.form');

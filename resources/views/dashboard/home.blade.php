@@ -78,8 +78,18 @@
                 <!-- /.info-box-content -->
             </div>
             <!-- /.info-box -->
-        </div>88
+        </div>
         <!-- /.col -->
+    </div>
+    {{-- synching button with alert when success --}}
+    <div class="mb-3">
+        <a href={{ route('sync')}} class="btn btn-primary" id="sync">Sync with pos 1</a>
+        @if (session('status'))
+            <div class="alert alert-success" id="success">
+                <strong>Success!</strong> Syncing is done.
+            </div>
+            
+        @endif
     </div>
     <div class="card card-info">
         <div class="card-header">

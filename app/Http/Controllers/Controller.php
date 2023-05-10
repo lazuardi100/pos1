@@ -9,6 +9,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class Controller extends BaseController
 {
@@ -44,15 +45,35 @@ class Controller extends BaseController
     public function woocommerce()
     {
         $woocommerce = new Client(
-            'https://workethicstudio.com/',
-            'ck_d0af19fdc508051a34b90ba681635e0b4bcc882a',
-            'cs_4aea9aeb04000260238cdaa19995fe8ffdac2c80',
+            // 'https://workethicstudio.com/',
+            'http://0.0.0.0:8081/',
+            'ck_ca2e183c950dcfb0b93a9d7e31039da4bd639ac6',
+            'cs_2b8417cff8fc7dc2c501d25c0305f8ab125eb8a1',
             [
                 'version' => 'wc/v3',
+                'verify_ssl' => false,
+                'wp_api' => true,
+                'query_string_auth' => true,
             ]
         );
 
+        // new key
+        // key: ck_ca2e183c950dcfb0b93a9d7e31039da4bd639ac6
+        // secret: cs_2b8417cff8fc7dc2c501d25c0305f8ab125eb8a1
+
         return $woocommerce;
+    }
+
+    public function shopifyGet(String $endpoint, Array $params = []){
+        return Http::withHeaders([
+            'X-Shopify-Access-Token' => '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'
+        ])->get('https://theblotter-room.com/admin/api/2023-04/' . $endpoint, $params);
+    }
+
+    public function shopifyPost(String $endpoint, Array $params = []){
+        return Http::withHeaders([
+            'X-Shopify-Access-Token' => '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'
+        ])->post('https://theblotter-room.com/admin/api/2023-04/' . $endpoint, $params);
     }
 
     public function cart(){

@@ -419,6 +419,11 @@ return [
 //                ],
             ],
         ],
+        [
+            'text'    => 'Synchronize',
+            'icon'    => 'fas fa-fw fa-share',
+            
+        ],
     ],
 
     /*
