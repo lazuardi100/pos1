@@ -317,16 +317,18 @@ class HomeController extends Controller
         } else {
             $page = $request->page;
         }
-
+        $params = [
+            'page' => $page,
+        ];
 
         $woocommerce = $this->woocommerce();
-        $array = $woocommerce->get('products?page=' . $page);
+        $array = $woocommerce->get('products', $params);
 
 
         $a = $woocommerce->http->getResponse();
         $headers = $a->getHeaders();
-        $totalPages = $headers['x-wp-totalpages'];
-        $total = $headers['x-wp-total'];
+        $totalPages = $headers['X-WP-TotalPages'];
+        $total = $headers['X-WP-Total'];
         // $current_page = '1';
 
         $array = new Paginator($array, $total, '10', $page, [
@@ -400,13 +402,15 @@ class HomeController extends Controller
         }
 
         $woocommerce = $this->woocommerce();
-
-        $array = $woocommerce->get('products?page=' . $page);
+        $params = [
+            'page' => $page,
+        ];
+        $array = $woocommerce->get('products', $params);
 
         $a = $woocommerce->http->getResponse();
         $headers = $a->getHeaders();
-        $totalPages = $headers['x-wp-totalpages'];
-        $total = $headers['x-wp-total'];
+        $totalPages = $headers['X-WP-TotalPages'];
+        $total = $headers['X-WP-Total'];
         // $current_page = '1';
 
         $array = new Paginator($array, $total, '10', $page, [
@@ -448,8 +452,8 @@ class HomeController extends Controller
 //        dd($array);
         $a = $woocommerce->http->getResponse();
         $headers = $a->getHeaders();
-        $totalPages = $headers['x-wp-totalpages'];
-        $total = $headers['x-wp-total'];
+        $totalPages = $headers['X-WP-TotalPages'];
+        $total = $headers['X-WP-Total'];
         // $current_page = '1';
 
         $array = new Paginator($array, $total, '10', $page, [

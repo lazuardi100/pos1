@@ -276,17 +276,6 @@ return [
             'type'         => 'fullscreen-widget',
             'topnav_right' => true,
         ],
-
-
-
-        // Sidebar items:
-
-
-
-//        [
-//            'type' => 'sidebar-menu-search',
-//            'text' => 'search',
-//        ],
         [
             'text' => 'blog',
             'url'  => 'admin/blog',
@@ -296,128 +285,127 @@ return [
             'text'        => 'POS',
             'url'         => '/pos',
             'icon'        => 'fas fa-folder',
-
-//            'label'       => 4,
-//            'label_color' => 'success',
         ],
         [
             'text'        => 'Dashboard',
             'url'         => '/home',
             'icon'        => 'fas fa-folder',
-//            'label'       => 4,
-//            'label_color' => 'success',
         ],
         [
             'text'        => 'Transaction',
             'url'         => '/transaction',
             'icon'        => 'fas fa-folder',
             'can'         => 'admin'
-//            'label'       => 4,
-//            'label_color' => 'success',
-        ],
-
-
-        ['header' => 'account_settings'],
-        [
-            'text'    => 'Products',
-            'icon'    => 'fas fa-fw fa-share',
-            'submenu' => [
-                [
-                    'text' => 'List Product',
-                    'url'  => '/products',
-                ],
-                [
-                    'text' => 'Add product',
-                    'url'  => '/products/a/create',
-                    'can'         => 'admin'
-                ],
-                [
-                    'text' => 'Import product',
-                    'url'  => '/products/import',
-                    'can'         => 'admin'
-                ],
-                [
-                    'text' => 'Print label',
-                    'url'  => '/products/label',
-                    'can'         => 'admin'
-                ],
-            ],
         ],
         [
-            'text'    => 'Categories',
-            'icon'    => 'fas fa-fw fa-share',
-            'submenu' => [
-                [
-                    'text' => 'List category',
-                    'url'  => '/categories',
-                ],
-                [
-                    'text' => 'Add category',
-                    'url'  => '/categories/a/create',
-                    'can'         => 'admin'
-                ],
-//                [
-//                    'text' => 'Import product',
-//                    'url'  => '/categories/import',
-//                ],
-            ],
+            'text'        => 'Add Global Product',
+            'url'         => '/global_product/add',
+            'icon'        => 'fas fa-plus',
+            'can'         => 'admin'
         ],
+        ['header' => 'Woocommerce'],
         [
-            'text'    => 'Users',
-            'icon'    => 'fas fa-fw fa-share',
-            'submenu' => [
+            'text'        => 'Woocommerce',
+            'icon'        => 'fab fa-wordpress-simple',
+            'submenu'     => [
                 [
-                    'text' => 'List Users',
-                    'url'  => '/users',
+                    'text'    => 'Products',
+                    'icon'    => 'fas fa-fw fa-share',
+                    'submenu' => [
+                        [
+                            'text' => 'List Product',
+                            'url'  => '/products',
+                        ],
+                        [
+                            'text' => 'Add product',
+                            'url'  => '/products/a/create',
+                            'can'         => 'admin'
+                        ],
+                        [
+                            'text' => 'Import product',
+                            'url'  => '/products/import',
+                            'can'         => 'admin'
+                        ],
+                        [
+                            'text' => 'Print label',
+                            'url'  => '/products/label',
+                            'can'         => 'admin'
+                        ],
+                    ],
                 ],
                 [
-                    'text' => 'Add User',
-                    'url'  => '/users/create',
-                    'can'         => 'admin'
+                    'text'    => 'Categories',
+                    'icon'    => 'fas fa-fw fa-share',
+                    'submenu' => [
+                        [
+                            'text' => 'List category',
+                            'url'  => '/categories',
+                        ],
+                        [
+                            'text' => 'Add category',
+                            'url'  => '/categories/a/create',
+                            'can'         => 'admin'
+                        ],
+                    ],
                 ],
-//                [
-//                    'text' => 'Import product',
-//                    'url'  => '/categories/import',
-//                ],
-            ],
+                [
+                    'text'    => 'Users',
+                    'icon'    => 'fas fa-fw fa-share',
+                    'submenu' => [
+                        [
+                            'text' => 'List Users',
+                            'url'  => '/users',
+                        ],
+                        [
+                            'text' => 'Add User',
+                            'url'  => '/users/create',
+                            'can'         => 'admin'
+                        ],
+                    ],
+                ],
+                [
+                    'text'    => 'Expenses',
+                    'icon'    => 'fas fa-fw fa-share',
+                    'submenu' => [
+                        [
+                            'text' => 'List category',
+                            'url'  => '/expense',
+                        ],
+                        [
+                            'text' => 'Add expense',
+                            'url'  => '/expense/create',
+                            'can'         => 'admin'
+                        ],
+                    ],
+                ],
+                [
+                    'text'    => 'Discount',
+                    'icon'    => 'fas fa-fw fa-share',
+                    'submenu' => [
+                        [
+                            'text' => 'List Discount',
+                            'url'  => '/discount',
+                        ],
+                        [
+                            'text' => 'Add Discount',
+                            'url'  => '/discount/create',
+                            'can'         => 'admin'
+                        ],
+                    ],
+                ],
+            ]
         ],
+        ['header' => 'Shopify'],
         [
-            'text'    => 'Expenses',
-            'icon'    => 'fas fa-fw fa-share',
-            'submenu' => [
+            'text'        => 'Woocommerce',
+            'icon'        => 'fab fa-shopify',
+            'submenu'     => [
                 [
-                    'text' => 'List category',
-                    'url'  => '/expense',
+                    'text'    => 'Products',
+                    'icon'    => 'fas fa-fw fa-share',
+                    'url'     => 'shopify/products',
                 ],
-                [
-                    'text' => 'Add expense',
-                    'url'  => '/expense/create',
-                    'can'         => 'admin'
-                ],
-//                [
-//                    'text' => 'Import product',
-//                    'url'  => '/categories/import',
-//                ],
-            ],
-        ],
-        [
-            'text'    => 'Discount',
-            'icon'    => 'fas fa-fw fa-share',
-            'submenu' => [
-                [
-                    'text' => 'List Discount',
-                    'url'  => '/discount',
-                ],
-                [
-                    'text' => 'Add Discount',
-                    'url'  => '/discount/create',
-                    'can'         => 'admin'
-                ],
-//                [
-//                    'text' => 'Import product',
-//                    'url'  => '/categories/import',
-//                ],
-            ],
+            ]
         ],
     ],
 

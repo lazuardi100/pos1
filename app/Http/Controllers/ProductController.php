@@ -37,17 +37,14 @@ class ProductController extends Controller
 
     }
     public function labelPrint(Request $request){
-//        dd($request->all());
         $tmpData=[];
         $tmp=[];
         $as=0;
         $name = $request->name;
-//        dd($request->qty );
         $qty = $request->qty;
         $unit_pirce = $request->unit_pirce;
         $ssd = 0;
         foreach ($request->qty as $a){
-//            dd($a);
             $a = (int)$a;
             for ($i = 0;$i<$a;$i++){
                 $tmpData[$ssd] = $name[$as];
@@ -60,22 +57,16 @@ class ProductController extends Controller
             $as++;
         }
 
-//        dd($tmp[0]['qty']);
-
         view()->share([
             'tmpData' =>$tmpData,
             'tmpas' => $tmp,
             'count' => count($tmpData),
             'convert' => $this->convertUSD()
         ]);
-
-
-
         return view('dashboard.printLabel');
     }
 
     public function actionLabel($id,$name,$price, Request $request){
-//        dd('dwq');
         $data = new Label();
         $data->user_id = Auth::user()->id;
         $data->product_id = $id;
@@ -96,7 +87,6 @@ class ProductController extends Controller
         $woocommerce = $this->woocommerce();
 
         $array = $woocommerce->get('products/'.$id.'/variations');
-//        dd($array);
 
         $get = $woocommerce->get('products/'.$id);
 
@@ -122,13 +112,15 @@ class ProductController extends Controller
         }
 
         $woocommerce = $this->woocommerce();
-
-        $array = $woocommerce->get('products?page=' . $page);
+        $params = [
+            'page' => $page,
+        ];
+        $array = $woocommerce->get('products', $params);
 
         $a = $woocommerce->http->getResponse();
         $headers = $a->getHeaders();
-        $totalPages = $headers['x-wp-totalpages'];
-        $total = $headers['x-wp-total'];
+        $totalPages = $headers['X-WP-TotalPages'];
+        $total = $headers['X-WP-Total'];
         // $current_page = '1';
 
         $array = new Paginator($array, $total, '10', $page, [
@@ -148,13 +140,7 @@ class ProductController extends Controller
         return view('dashboard.label');
     }
 
-    public function index(Request $request)
-    {
-//
-//        $exchangeRates = new ExchangeRate();
-//        return $exchangeRates->convert(100, 'GBP', 'EUR', Carbon::now());
-
-        //        dd($this->woocommerce()->get('products'));
+    public function index(Request $request){
         if ($request->page == null || $request->page == '') {
             $page = '1';
         } else {
@@ -162,13 +148,15 @@ class ProductController extends Controller
         }
 
         $woocommerce = $this->woocommerce();
-
-        $array = $woocommerce->get('products?page=' . $page);
+        $params = [
+            'page' => $page,
+        ];
+        $array = $woocommerce->get('products', $params);
 
         $a = $woocommerce->http->getResponse();
         $headers = $a->getHeaders();
-        $totalPages = $headers['x-wp-totalpages'];
-        $total = $headers['x-wp-total'];
+        $totalPages = $headers['X-WP-TotalPages'];
+        $total = $headers['X-WP-Total'];
         // $current_page = '1';
 
         $array = new Paginator($array, $total, '10', $page, [
@@ -215,20 +203,11 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-//        if ()
-//        dd($request);
         $woocommerce = $this->woocommerce();
-
-
         $jenis_input = $request->jenis_input;
         $jumlah_input = $request->jumlah_input;
-//        $cari = $woocommerce->get('products?search='.$request->jenis_input[0]);
-//        dd($cari);
-
-//        dd(url('as'));
         $tmpUrl = [];
         $i= 0;
-//        dd($request->file('image'));
         if ($request->file('image')){
             $files = $request->file('image');
             foreach ($files as $file) {
@@ -243,15 +222,9 @@ class ProductController extends Controller
                 ];
             }
         }
-//        else{
-//            dd('file not found');
-//        }
-
-
 
         if ($request->type == '1'){
             $type = 'simple';
-//            dd($type);
 
             $data = [
                 'name' => $request->name,
@@ -277,11 +250,7 @@ class ProductController extends Controller
 
         }else{
 
-//            dd('dwq');
-
             $type = 'simple';
-
-//            dd($type);
 
             $data = [
                 'name' => $request->name,
@@ -311,21 +280,15 @@ class ProductController extends Controller
                         'options' => $jenis_input
                     ),
                 ),
-//                'price_html' => '<span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#36;</span>22</bdi></span>'
             ];
 
-
             $ls = $this->woocommerce()->post('products', $data);
-
-//            dd($ls);
 
             $datas = [
                 'type' => 'variable'
             ];
 
             $woocommerce->put('products/'.$ls ->id, $datas);
-//            dd($woocommerce->put('products/'.$ls ->id, $datas));
-
 
             $itung = count($request->jumlah_input);
 
@@ -380,10 +343,6 @@ class ProductController extends Controller
         $new->price_sale = $request->price;
         $new->barcode = $request->barcode;
         $new->save();
-
-
-
-
 
         return redirect()->route('products.index')->with('success','success edit data');
     }

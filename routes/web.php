@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\GlobalProductController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -83,6 +85,19 @@ Route::middleware(['auth'])->group(function () {
         // Route::get('/', [App\Http\Controllers\ProductController::class, 'index'])->name('index');
     });
 
+    Route::group(['prefix' => 'shopify', 'as' => 'shopify.', 'middleware' => 'auth'], function () {
+        Route::group(['prefix' => 'products', 'as' => 'products'], function(){
+            Route::get('/', [App\Http\Controllers\ShopifyController::class, 'index'])->name('index');
+        });
+    });
+
+    Route::group(['prefix'=> 'global_product', 'as'=>'global_product.', 'middleware'=>'auth'], function (){
+        Route::get('/add', function(){
+            return view('dashboard.global_product.index');
+        })->name('index');
+
+        Route::post('/save', [GlobalProductController::class, 'save'])->name('save');
+    });
 
     Route::group(['prefix' => 'categories', 'as' => 'categories.', 'middleware' => 'auth'], function () {
         Route::get('/import', [App\Http\Controllers\CategoryController::class, 'import'])->name('import');
