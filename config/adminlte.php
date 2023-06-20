@@ -303,6 +303,12 @@ return [
             'icon'        => 'fas fa-plus',
             'can'         => 'admin'
         ],
+        [
+            'text'        => 'Transfer Product',
+            'url'         => '/transfer_product',
+            'icon'        => 'fas fa-exchange-alt',
+            'can'         => 'admin'
+        ],
         ['header' => 'Woocommerce'],
         [
             'text'        => 'Woocommerce',
@@ -397,7 +403,7 @@ return [
         ],
         ['header' => 'Shopify'],
         [
-            'text'        => 'Woocommerce',
+            'text'        => 'Shopify',
             'icon'        => 'fab fa-shopify',
             'submenu'     => [
                 [

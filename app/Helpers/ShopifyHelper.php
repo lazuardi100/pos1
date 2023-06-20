@@ -7,17 +7,18 @@ use Illuminate\Support\Facades\Http;
 class ShopifyHelper{
 
   private $cache_time = 10 * 60;
+  private $url = 'https://theblotter-room-8686.myshopify.com/admin/api/2023-04/';
 
   public function shopifyGet(String $endpoint, Array $params = []){
     return Http::withHeaders([
         'X-Shopify-Access-Token' => env('SHOPIFY_API_KEY')
-    ])->get('https://theblotter-room.com/admin/api/2023-04/' . $endpoint, $params);
+    ])->get($this->url . $endpoint, $params);
   }
 
   public function shopifyPost(String $endpoint, Array $params = []){
     return Http::withHeaders([
         'X-Shopify-Access-Token' => env('SHOPIFY_API_KEY')
-    ])->post('https://theblotter-room.com/admin/api/2023-04/' . $endpoint, $params);
+    ])->post($this->url . $endpoint, $params);
   }
 
   public function getProducts(){

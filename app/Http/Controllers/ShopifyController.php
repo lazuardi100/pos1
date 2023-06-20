@@ -18,7 +18,7 @@ class ShopifyController extends Controller
         // check cache
         $shopify = new ShopifyHelper();
         $products = $shopify->getProducts();
-        dd($products);
+        // dd($products);
         // paginate products
         $array = new Paginator($products, 10, $page, [
             'path' => $request->url(),

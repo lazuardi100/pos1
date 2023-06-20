@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ShopifyHelper;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class GlobalProductController extends Controller
 {
@@ -25,10 +26,7 @@ class GlobalProductController extends Controller
         $this->save_to_shopify($name, $description);
       }
 
-      return view('dashboard.global_product.index', [
-        'name' => $name,
-        'description' => $description,
-      ]);
+      return redirect()->back()->with('success', 'Product saved successfully');
     }
 
     private function save_to_woo(String $name, String $description){
@@ -39,7 +37,7 @@ class GlobalProductController extends Controller
       ];
 
       try {
-        $this->woocommerce()->post('products', $data);
+        Log::debug(strval($this->woocommerce()->post('products', $data)));
       } catch (\Throwable $th) {
       }
     }
@@ -57,5 +55,6 @@ class GlobalProductController extends Controller
       $shopify_helper = new ShopifyHelper();
 
       $shopify_helper->shopifyPost('products.json', $data);
+      Log::debug(strval($shopify_helper->shopifyPost('products.json', $data)));
     }
 }

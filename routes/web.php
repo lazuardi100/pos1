@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GlobalProductController;
+use App\Http\Controllers\StockTransferController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -97,6 +98,15 @@ Route::middleware(['auth'])->group(function () {
         })->name('index');
 
         Route::post('/save', [GlobalProductController::class, 'save'])->name('save');
+    });
+
+    Route::group(['prefix'=> 'transfer_product', 'as'=>'transfer_product.', 'middleware'=>'auth'], function (){
+        Route::get('/', function(){
+            return view('dashboard.transfer_product.index');
+        })->name('index');
+
+        Route::get('/from_woo', [StockTransferController::class, 'from_woo'])->name('from_woo');
+        Route::get('/from_woo/{id}', [StockTransferController::class, 'from_woo_detail'])->name('from_woo_detail');
     });
 
     Route::group(['prefix' => 'categories', 'as' => 'categories.', 'middleware' => 'auth'], function () {
