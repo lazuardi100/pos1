@@ -21,6 +21,13 @@ class ShopifyHelper{
     ])->post($this->url . $endpoint, $params);
   }
 
+  public function shopifyPut(String $endpoint, Array $params = []){
+    return Http::withHeaders([
+        'X-Shopify-Access-Token' => env('SHOPIFY_API_KEY'),
+        'Content-Type' => 'application/json'
+    ])->put($this->url . $endpoint, $params);
+  }
+
   public function getProducts(){
     if (Cache::has('products_shopify')) {
       $products = Cache::get('products_shopify');
@@ -41,6 +48,17 @@ class ShopifyHelper{
     }
 
     return $product;
+  }
+
+  public function getVariant($id){
+    if (Cache::has('variant_shopify_' . $id)) {
+      $variant = Cache::get('variant_shopify_' . $id);
+    } else {
+        $variant = json_decode($this->shopifyGet('variants/' . $id . '.json')->body())->variant;
+        Cache::put('variant_shopify_' . $id, $variant, $this->cache_time);
+    }
+
+    return $variant;
   }
 }
 ?>

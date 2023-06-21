@@ -10,7 +10,7 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-6 col-12">
-        <a href="">
+        <a href={{route('transfer_product.from_shopify')}}>
           <div class="card">
             <div class="card-body text-center">
               <i class="fab fa-shopify" style="font-size: 48px"></i>  
