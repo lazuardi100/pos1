@@ -38,5 +38,30 @@
         </a>
       </div>
     </div>
+
+    <div class="row">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th>Transfer Type</th>
+            <th>Quantity</th>
+            <th>Status</th>
+            <th>Transfer At</th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach ($histories as $historie)
+            <tr>
+              <td>{{$historie->product_name}}</td>
+              <td>{{$historie->transfer_type}}</td>
+              <td>{{$historie->quantity}}</td>
+              <td>{{$historie->is_success}}</td>
+              <td>{{$historie->created_at}}</td>
+            </tr>
+          @endforeach
+        </tbody>
+      </table>
+    </div>
   </div>
 @endsection
