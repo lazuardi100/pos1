@@ -21,6 +21,7 @@
     <form action={{route('transfer_product.from_shopify_save')}} method="post">
       @csrf
       <input type="hidden" name="woo_product_id" value={{$woo_product->id}}>
+      <input type="hidden" name="shopify_product_id" value={{$product->id}}>
       
       <label class="form-label">Product Name</label>
       <input type="text" class="form-control" name="product_name" value="{{$product->title}}" readonly>

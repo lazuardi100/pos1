@@ -18,12 +18,7 @@ class StockTransferController extends Controller
     }
 
     public function from_woo(){
-        if (Cache::has('all_products_woo')) {
-            $products = Cache::get('all_products_woo');
-        } else {
-            $products = $this->woocommerce()->get('products');
-            Cache::put('all_products_woo', $products, $this->cache_time);
-        }
+        $products = $this->woocommerce()->get('products');
         
         return view('dashboard.transfer_product.from_woo', compact('products'));
     }
@@ -118,7 +113,7 @@ class StockTransferController extends Controller
 
         $shopify_helper = new ShopifyHelper();
         $shopify_variant = $shopify_helper->getVariant($shopify_variant_id);
-        // dd($shopify_variant);
+        
         $error = [];
         $response = $shopify_helper->shopifyPost('inventory_levels/adjust.json', [
             'location_id' => 78386299153,
@@ -148,7 +143,6 @@ class StockTransferController extends Controller
             'is_success' => $is_success,
             'transfer_type' => 'from_woo_to_shopify',
         ]);
-        Cache::forget('product_detail_woo_'.$woo_product_id);
         return redirect()->route('transfer_product.from_woo')->with('success', 'Product transferred successfully');
     }
 
@@ -165,11 +159,12 @@ class StockTransferController extends Controller
         $woo_product_id = $request->woo_product_id;
         $shopify_helper = new ShopifyHelper();
         $product_name = $request->product_name;
+        $shopify_product_id = $request->shopify_product_id;
 
         $update_shopify_stock = $shopify_helper->shopifyPost('inventory_levels/adjust.json', [
             'location_id' => 78386299153,
             'inventory_item_id' => (int) $shopify_inventory_item_id,
-            'available_adjustment' => -$quantity,
+            'available_adjustment' => $quantity * -1,
         ]);
 
         $is_success = true;
@@ -191,17 +186,11 @@ class StockTransferController extends Controller
             'is_success' => $is_success,
             'transfer_type' => 'from_shopify_to_woo'
         ]);
-        Cache::forget('product_detail_woo_'.$woo_product_id);
         return redirect()->route('transfer_product.from_shopify')->with('success', 'Product transferred successfully');
     }
 
     private function woo_product($id){
-        if (Cache::has('product_detail_woo_'.$id)) {
-            $product = Cache::get('product_detail_woo_'.$id);
-        } else {
-            $product = $this->woocommerce()->get('products/'.$id);
-            Cache::put('product_detail_woo_'.$id, $product, $this->cache_time);
-        }
+        $product = $this->woocommerce()->get('products/'.$id);
 
         return $product;
     }

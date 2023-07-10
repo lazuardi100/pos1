@@ -46,7 +46,7 @@
             <th>Product Name</th>
             <th>Transfer Type</th>
             <th>Quantity</th>
-            <th>Status</th>
+            {{-- <th>Status</th> --}}
             <th>Transfer At</th>
           </tr>
         </thead>
@@ -56,7 +56,7 @@
               <td>{{$historie->product_name}}</td>
               <td>{{$historie->transfer_type}}</td>
               <td>{{$historie->quantity}}</td>
-              <td>{{$historie->is_success}}</td>
+              {{-- <td>{{$historie->is_success}}</td> --}}
               <td>{{$historie->created_at}}</td>
             </tr>
           @endforeach

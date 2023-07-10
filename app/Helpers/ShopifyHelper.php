@@ -29,34 +29,19 @@ class ShopifyHelper{
   }
 
   public function getProducts(){
-    if (Cache::has('products_shopify')) {
-      $products = Cache::get('products_shopify');
-    } else {
-        $products = json_decode($this->shopifyGet('products.json')->body())->products;
-        Cache::put('products_shopify', $products, $this->cache_time);
-    }
+    $products = json_decode($this->shopifyGet('products.json')->body())->products;
 
     return $products;
   }
 
   public function getProduct($id){
-    if (Cache::has('product_shopify_' . $id)) {
-      $product = Cache::get('product_shopify_' . $id);
-    } else {
-        $product = json_decode($this->shopifyGet('products/' . $id . '.json')->body())->product;
-        Cache::put('product_shopify_' . $id, $product, $this->cache_time);
-    }
+    $product = json_decode($this->shopifyGet('products/' . $id . '.json')->body())->product;
 
     return $product;
   }
 
   public function getVariant($id){
-    if (Cache::has('variant_shopify_' . $id)) {
-      $variant = Cache::get('variant_shopify_' . $id);
-    } else {
-        $variant = json_decode($this->shopifyGet('variants/' . $id . '.json')->body())->variant;
-        Cache::put('variant_shopify_' . $id, $variant, $this->cache_time);
-    }
+    $variant = json_decode($this->shopifyGet('variants/' . $id . '.json')->body())->variant;
 
     return $variant;
   }
