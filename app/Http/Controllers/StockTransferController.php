@@ -7,6 +7,7 @@ use App\Models\StockTransferHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use stdClass;
 
 class StockTransferController extends Controller
 {
@@ -14,7 +15,88 @@ class StockTransferController extends Controller
 
     public function index(){
         $histories = StockTransferHistory::orderBy('created_at', 'desc')->get();
-        return view('dashboard.transfer_product.index', compact('histories'));
+
+        $woo_products = (array) $this->woocommerce()->get('products');
+        $shopify = new ShopifyHelper();
+        $shopify_products = $shopify->getProducts();
+        $shopify_products_stocks = $this->accumulate_stock_shopify($shopify_products);
+        // dd($shopify_products_stocks, $woo_products);
+        $all_stocks = $this->grouping_product($shopify_products_stocks, $woo_products);
+        return view('dashboard.transfer_product.index', [
+            'histories' => $histories,
+            'all_stocks' => $this->order_by_total_stock($all_stocks),
+        ]);
+    }
+
+    private function order_by_total_stock($products){
+        $total_stocks = [];
+        foreach ($products as $product) {
+            $total_stocks[] = $product->shopify_stock + $product->woo_stock;
+        }
+        array_multisort($total_stocks, SORT_ASC, $products);
+        return $products;
+    }
+
+    private function grouping_product($shopify_products, $woo_products){
+        $all_stocks = [];
+        foreach ($shopify_products as $product) {
+            $temp_data = new stdClass();
+            $temp_data->title = $product->title;
+
+            $temp_data->shopify_stock = $product->shopify_stock;
+            $all_stocks[] = $temp_data;
+        }
+
+        foreach ($woo_products as $woo_product){
+            $is_available = false;
+            foreach ($all_stocks as $all_stock) {
+                if ($woo_product->name == $all_stock->title) {
+                    $is_available = true;
+                    if(is_numeric($woo_product->stock_quantity)){
+                        $all_stock->woo_stock = $woo_product->stock_quantity;
+                    }else{
+                        $all_stock->woo_stock = 0;
+                    }
+                    break;
+                }else{
+                    if (!isset($all_stock->woo_stock)){
+                        $all_stock->woo_stock = 0;
+                    }
+                }
+                
+            }
+            if(!$is_available){
+                $temp_data = new stdClass();
+                $temp_data->title = $woo_product->name;
+                if(is_numeric($woo_product->stock_quantity)){
+                    $temp_data->woo_stock = $woo_product->stock_quantity;
+                }else{
+                    $temp_data->woo_stock = 0;
+                }
+                $temp_data->shopify_stock = 0;
+                $all_stocks[] = $temp_data;
+            }
+        }
+        // dd($all_stocks);
+        return $all_stocks;
+    }
+
+    private function accumulate_stock_shopify($products){
+        $final_products = [];
+        foreach ($products as $product) {
+            $temp_data = new stdClass();
+            $temp_data->id = $product->id;
+            $temp_data->title = $product->title;
+            $stocks = 0;
+            foreach ($product->variants as $variant) {
+                if (is_numeric($variant->inventory_quantity)) {
+                    $stocks += $variant->inventory_quantity;
+                }
+            }
+            $temp_data->shopify_stock = $stocks;
+            $final_products[] = $temp_data;
+        }
+        return $final_products;
     }
 
     public function from_woo(){

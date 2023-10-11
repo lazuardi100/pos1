@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GlobalProductController;
+use App\Http\Controllers\LabelController;
 use App\Http\Controllers\StockTransferController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -121,6 +122,11 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/edit/{id}', [\App\Http\Controllers\CategoryController::class, 'update'])->name('update');
 
         Route::get('/', [App\Http\Controllers\CategoryController::class, 'index'])->name('index');
+    });
+
+    Route::group(['prefix' => 'label', 'as' => 'label.', 'middleware'=> 'auth'], function(){
+        Route::get('/', [LabelController::class, 'index'])->name('index');
+        Route::post('/print', [LabelController::class, 'printLabel'])->name('print');
     });
     Route::get('expense/destroys/{id}', [App\Http\Controllers\ExpenseController::class, 'destroy'])->name('expense.destroys');
     Route::resource('expense',\App\Http\Controllers\ExpenseController::class);

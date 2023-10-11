@@ -94,10 +94,10 @@ class HomeController extends Controller
 
         $data = Transaction::with(['customers'])->whereId($id)->first();
         $woocommerce = $this->woocommerce();
+        // dd($data->customer_id);
+        // $customer =$woocommerce->get('customers/'.$data->customer_id);
 
-        $customer =$woocommerce->get('customers/'.$data->customer_id);
-
-        $shipping = (array) $customer->shipping;
+        // $shipping = (array) $customer->shipping;
 //        dd($shipping['address_1']);
         $carts = cart::where('transaction_id','=',$id)->get();
 
@@ -113,7 +113,8 @@ class HomeController extends Controller
             'carts' => $carts,
             'data' => $data,
             'total' => $tmp,
-            'shipping' => $shipping['address_1'],
+            // 'shipping' => $shipping['address_1'],
+            'shipping' => "Jalan kenangan",
             'cs' => $cs
         ]);
         return view('dashboard.printShipping');

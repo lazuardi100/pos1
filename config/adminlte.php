@@ -304,6 +304,12 @@ return [
             'can'         => 'admin'
         ],
         [
+            'text'        => 'Print Label',
+            'url'         => '/label',
+            'icon'        => 'fas fa-plus',
+            'can'         => 'admin'
+        ],
+        [
             'text'        => 'Transfer Product',
             'url'         => '/transfer_product',
             'icon'        => 'fas fa-exchange-alt',

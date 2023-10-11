@@ -38,7 +38,28 @@
         </a>
       </div>
     </div>
-
+    <h1>Stock</h1>
+    <div class="row">
+      <table class="table">
+        <thead>
+          <tr>
+            <td>Nama</td>
+            <td>Stock shopify</td>
+            <td>Stock woocommerce</td>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach ($all_stocks as $product)
+            <tr>
+              <td>{{$product->title}}</td>
+              <td>{{$product->shopify_stock}}</td>
+              <td>{{$product->woo_stock}}</td>
+            </tr>
+          @endforeach
+        </tbody>
+      </table>
+    </div>
+    <h1>History</h1>
     <div class="row">
       <table class="table">
         <thead>
@@ -51,13 +72,13 @@
           </tr>
         </thead>
         <tbody>
-          @foreach ($histories as $historie)
+          @foreach ($histories as $history)
             <tr>
-              <td>{{$historie->product_name}}</td>
-              <td>{{$historie->transfer_type}}</td>
-              <td>{{$historie->quantity}}</td>
-              {{-- <td>{{$historie->is_success}}</td> --}}
-              <td>{{$historie->created_at}}</td>
+              <td>{{$history->product_name}}</td>
+              <td>{{$history->transfer_type}}</td>
+              <td>{{$history->quantity}}</td>
+              {{-- <td>{{$history->is_success}}</td> --}}
+              <td>{{$history->created_at}}</td>
             </tr>
           @endforeach
         </tbody>
