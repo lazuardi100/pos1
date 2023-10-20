@@ -9,6 +9,7 @@ use App\Models\Expense;
 use App\Models\Product;
 use App\Models\Transaction;
 use Automattic\WooCommerce\Client;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
@@ -103,21 +104,25 @@ class HomeController extends Controller
 
         $cs = Customer::where('customer_id','=',$data->customer_id)->first();
 
-//        dd($cs);
         $tmp = 0;
         foreach ($carts as $a){
             $tmp = $tmp + $a->subTotal;
         }
 
-        view()->share([
+        $data = [
             'carts' => $carts,
             'data' => $data,
             'total' => $tmp,
             // 'shipping' => $shipping['address_1'],
             'shipping' => "Jalan kenangan",
             'cs' => $cs
-        ]);
-        return view('dashboard.printShipping');
+        ];
+
+        // set pdf to panjang 100cm tinggi 150cm
+        $custom_paper = array(0,0,1000,1500);
+        $pdf = Pdf::loadView('dashboard.printShipping', $data)->setPaper($custom_paper, 'portrait');
+        // return view('dashboard.printShipping');
+        return $pdf->download('shipping.pdf');
 
     }
 
