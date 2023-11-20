@@ -38,11 +38,12 @@
         <center>
         <div class="row mt-4">
             @foreach($products as $product)
-
             <div class="col-md-4">
                 <a href="{{($product->type == 'variable') ? route('posVariable',$product->id) : route('actionCart',[$product->name,$product->regular_price,$product->id,'simple'])}}">
                 <div class="card" style="width: 15rem;">
-                    <img class="card-img-top" src="{{$product->images[0]->src}}">
+                    @if ($product->images != [])
+                        <img class="card-img-top" src="{{$product->images[0]->src}}">
+                    @endif
                     <div class="card-body">
                         <h5 class="card-title"> {{$product->type}} - {{$product->name}}</h5>
                     </div>

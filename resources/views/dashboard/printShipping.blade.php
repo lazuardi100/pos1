@@ -13,100 +13,113 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css')}}">
     <style>
+        @media print {
+            html,body {
+                width: 70mm;
+                height: 105mm;
+            }
+        /* etc */
+        }
+        @page {
+            size: 70mm 105mm;
+            margin: 3px;
+        }
         table, th, td {
             border: 3px solid black;
             border-collapse: collapse;
+        }
+        body{
+            margin: 0;
         }
 
         .print_section{
             /* panjang 100cm tinggi 150cm */
             width: 100mm;
-            height: 150mm;
+            min-height: 150mm;
+            /* border: 2px solid red; */
         }
     </style>
 </head>
 <body>
 <div class="wrapper print_section">
+    <table style="width: 100%; min-height:150mm">
+        <tr >
+            <th><center><a style="font-size: 50px;"> P </a></center></th>
+            <th width="80%">
+                <div>
+                    <p></p>
+                    {{-- <a style="float: right;">{!! DNS2D::getBarcodeHTML(substr(str_shuffle("0123456789"), 0, 13), 'QRCODE') !!}</a> --}}
+                    <div style="float: right;" id="qrcode">
 
-    <center>
-        <table style="width: 100%">
-            <tr >
-                <th><center><a style="font-size: 50px;"> P </a></center></th>
-                <th width="80%">
-                    <div>
-                        <p></p>
-                        {{-- <a style="float: right;">{!! DNS2D::getBarcodeHTML(substr(str_shuffle("0123456789"), 0, 13), 'QRCODE') !!}</a> --}}
-                        <div style="float: right;" id="qrcode">
-
-                        </div>
                     </div>
-                </th>
-            </tr>
-            <tr>
-                <td colspan="2">
+                </div>
+            </th>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <center>
+                    <h3>PRIORITY MAIL</h3>
+                </center>
+            </td>
+        </tr>
+        <tr style="height: 250px">
+            <td colspan="2">
+                <div class="row ml-3">
+                    <div class="col-6">
+                        <p class="lh-sm fs-5">
+                            Don Bimam 
+                            <br> 
+                            221 Baker Street
+                            <br>
+                            Santa Carla, CA 12345
+                        </p>
+                        
+                    </div>
+                </div>
+                <div class="row ml-3">
+                    <div class="col-4">
+                        <p class="fs-5">Shiping to :</p>
+                    </div>
+                    <div class="col-6">
+                        <p class="lh-sm fs-5">
+                            Holly Golightly
+                            <br>
+                            1428 Elm Street
+                            <br>
+                            San Junipero, CA 67809
+                        </p>
+                        {{-- {{$shipping}} --}}
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr style="height: 70px">
+            <td colspan="2">
+                <?php
+                $random = substr(str_shuffle("0123456789"), 0, 13);
+                ?>
+                <a>
                     <center>
-                        <h3>PRIORITY MAIL</h3>
+                        {{-- {!! DNS1D::getBarcodeHTML($random, "C128",10,450) !!} --}}
+                        <canvas id="barcode" value={{$random}}></canvas>
+                        {{-- <h1>
+                            {{$random}}
+                        </h1> --}}
                     </center>
-                </td>
-            </tr>
-            <tr style="height: 250px">
-                <td colspan="2">
-                    <div class="row ml-3">
-                        <div class="col-6">
-                            <p class="lh-sm fs-5">
-                                Don Bimam 
-                                <br> 
-                                221 Baker Street
-                                <br>
-                                Santa Carla, CA 12345
-                            </p>
-                            
-                        </div>
-                    </div>
-                    <div class="row ml-3">
-                        <div class="col-4">
-                            <p class="fs-5">Shiping to :</p>
-                        </div>
-                        <div class="col-6">
-                            <p class="lh-sm fs-5">
-                                Holly Golightly
-                                <br>
-                                1428 Elm Street
-                                <br>
-                                San Junipero, CA 67809
-                            </p>
-                            {{-- {{$shipping}} --}}
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            <tr style="height: 70px">
-                <td colspan="2">
-                    <?php
-                    $random = substr(str_shuffle("0123456789"), 0, 13);
-                    ?>
-                    <a>
-                        <center>
-                            {{-- {!! DNS1D::getBarcodeHTML($random, "C128",10,450) !!} --}}
-                            <canvas id="barcode" value={{$random}}></canvas>
-                            {{-- <h1>
-                                {{$random}}
-                            </h1> --}}
-                        </center>
-                    </a>
-                </td>
-            </tr>   <tr>
-                <td colspan="2">
-                    {{-- {{$cs->customer_track}} --}}
-                    <center>
-                        <h5>
-                            Tracking #: DX-PV54
-                        </h5>
-                    </center>
-                </td>
-            </tr>
-        </table>
-    </center>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                {{-- {{$cs->customer_track}} --}}
+                <center>
+                    <h5>
+                        Tracking #: DX-PV54
+                    </h5>
+                </center>
+            </td>
+        </tr>
+    </table>
     <!-- Main content -->
 
     <!-- /.content -->
@@ -136,7 +149,7 @@
     JsBarcode("#barcode", "{{$random}}", {
         format: "CODE128",
         lineColor: "#000",
-        width: 4,
+        width: 3,
         height: 60,
         displayValue: true
     });

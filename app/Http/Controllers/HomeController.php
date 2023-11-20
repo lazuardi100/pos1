@@ -119,10 +119,11 @@ class HomeController extends Controller
         ];
 
         // set pdf to panjang 100cm tinggi 150cm
-        $custom_paper = array(0,0,1000,1500);
-        $pdf = Pdf::loadView('dashboard.printShipping', $data)->setPaper($custom_paper, 'portrait');
-        // return view('dashboard.printShipping');
-        return $pdf->download('shipping.pdf');
+        // $custom_paper = array(0,0,1000,1500);
+        // $pdf = Pdf::loadView('dashboard.printShipping', $data)->setPaper($custom_paper, 'portrait');
+        return view('dashboard.printShipping',
+            $data);
+        // return $pdf->download('shipping.pdf');
 
     }
 
