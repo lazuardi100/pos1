@@ -55,7 +55,11 @@
                 <td><div class="price">{{$cart->price}}</div></td>
                 <td><input type="text" value="{{$cart->qty}}" id="qty" onchange="change({{$cart->id,}},$(this).val())" name="qty" style="width: 30px"></td>
                 <td><a id="subPrice">{{$cart->subTotal}}</a></td>
-                <td><a href="{{route('delete.cart',$cart->id)}}">dlt</a></td>
+                <td>
+                    <a href="{{route('delete.cart',$cart->id)}}">
+                        <i class="fas fa-trash-alt" style="color: red"></i>
+                    </a>
+                </td>
 
             </tr>
 

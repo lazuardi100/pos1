@@ -33,7 +33,11 @@
                     <tr>
                         <td>{{$loop->iteration}}</td>
                         <td>{{$a->created_at}}</td>
-                        <td>{{$a->customers->name}}</td>
+                        @if($a->customers == null)
+                            <td>Guest</td>
+                        @else
+                            <td>{{$a->customers->name}}</td>
+                        @endif
                         <td>
                             <?php
                             $tmp = (float)0;
@@ -44,9 +48,17 @@
                             {{$tmp}}
                         </td>
                         <td>{{$a->note_pay}}</td>
-                        <td> {{$a->customers->discount}}</td>
+                        @if($a->customers == null)
+                            <td>{{$tmp}}</td>
+                        @else
+                            <td> {{$a->customers->discount}}</td>
+                        @endif
                         <td> {{$a->note_pay}}</td>
-                        <td>{{(float)$tmp - (float)$a->customers->discount}}</t>
+                        @if($a->customers == null)
+                            <td>{{$tmp}}</td>
+                        @else
+                            <td>{{(float)$tmp - (float)$a->customers->discount}}</t>
+                        @endif
                         <td> {{$a->hold}}</td>
 
                         {{--                    <td>{!! $product->price_html !!}</td>--}}

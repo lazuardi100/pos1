@@ -235,32 +235,37 @@ class HomeController extends Controller
         $woocommerce = $this->woocommerce();
 
         $data = [
-            'email' => $request->customer_email,
-            'first_name' => $frist,
-            'last_name' => implode(' ',$PecahStr),
+            'email' => (string) $request->customer_email,
+            'first_name' => (string) $frist,
+            'last_name' => (string) implode(' ',$PecahStr),
 //            'username' => 'john.doe',
             'billing' => [
-                'first_name' => 'John',
-                'last_name' => 'Doe',
-                'address_1' => $request->customer_address,
+                'first_name' => (string) $frist,
+                'last_name' => implode(' ',$PecahStr),
+                'address_1' => (string) $request->customer_address,
                 'country' => 'INA',
-                'email' => $request->customer_email,
+                'email' => (string) $request->customer_email,
                 'phone' => '(555) 555-5555'
             ],
             'shipping' => [
-                'first_name' => $frist,
+                'first_name' => (string) $frist,
                 'last_name' => implode(' ',$PecahStr),
-                'address_1' => $request->customer_address,
+                'address_1' => (string) $request->customer_address,
                 'country' => 'INA',
-                'email' => $request->customer_email,
-                'phone' => $request->customer_phone
+                'email' => (string) $request->customer_email,
+                'phone' => (string) $request->customer_phone
             ]
         ];
 
-
-
         $customer = $woocommerce->post('customers', $data);
 
+        if ($request->customer_discount == null){
+            $request->customer_discount = 0;
+        }
+
+        if($request->customer_track == null){
+            $request->customer_track = 'no';
+        }
 
         $cs = new Customer();
         $cs->customer_id = $customer->id;
