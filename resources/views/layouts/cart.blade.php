@@ -104,19 +104,19 @@
 
                     <div class="form-group mt-3">
                         <labe>Name </labe>
-                        <input type="input" name="customer_name" class="form-control" id="exampleInputEmail1">
+                        <input type="input" name="customer_name" class="form-control" id="exampleInputEmail1" required>
 
                     </div>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group mt-3">
                                 <labe>Email </labe>
-                                <input type="email" name="customer_email" class="form-control" id="exampleInputEmail1">
+                                <input type="email" name="customer_email" class="form-control" id="exampleInputEmail1" required>
 
                             </div>
                             <div class="form-group mt-3">
                                 <labe>Address </labe>
-                                <input type="input" name="customer_address" class="form-control" id="exampleInputEmail1">
+                                <input type="input" name="customer_address" class="form-control" id="exampleInputEmail1" required>
 
                             </div>
                         </div>

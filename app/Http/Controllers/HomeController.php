@@ -96,9 +96,9 @@ class HomeController extends Controller
         $data = Transaction::with(['customers'])->whereId($id)->first();
         $woocommerce = $this->woocommerce();
         // dd($data->customer_id);
-        // $customer =$woocommerce->get('customers/'.$data->customer_id);
+        $customer =$woocommerce->get('customers/'.$data->customer_id);
 
-        // $shipping = (array) $customer->shipping;
+        $shipping = (array) $customer->shipping;
 //        dd($shipping['address_1']);
         $carts = cart::where('transaction_id','=',$id)->get();
 
@@ -113,10 +113,13 @@ class HomeController extends Controller
             'carts' => $carts,
             'data' => $data,
             'total' => $tmp,
-            // 'shipping' => $shipping['address_1'],
-            'shipping' => "Jalan kenangan",
-            'cs' => $cs
+            'shipping' => $shipping['address_1'],
+            // 'shipping' => "Jalan kenangan",
+            'cs' => $cs,
+            'customer_name' => $shipping['first_name'].' '.$shipping['last_name'],
         ];
+
+        // dd($shipping);
 
         // set pdf to panjang 100cm tinggi 150cm
         // $custom_paper = array(0,0,1000,1500);
@@ -241,21 +244,30 @@ class HomeController extends Controller
 //            'username' => 'john.doe',
             'billing' => [
                 'first_name' => (string) $frist,
-                'last_name' => implode(' ',$PecahStr),
+                'last_name' => (string) implode(' ',$PecahStr),
+                'company' => '',
                 'address_1' => (string) $request->customer_address,
-                'country' => 'INA',
-                'email' => (string) $request->customer_email,
-                'phone' => '(555) 555-5555'
-            ],
-            'shipping' => [
-                'first_name' => (string) $frist,
-                'last_name' => implode(' ',$PecahStr),
-                'address_1' => (string) $request->customer_address,
+                'address_2' => '',
+                'city' => '',
+                'state' => '',
+                'postcode' => '',
                 'country' => 'INA',
                 'email' => (string) $request->customer_email,
                 'phone' => (string) $request->customer_phone
+            ],
+            'shipping' => [
+                'first_name' => (string) $frist,
+                'last_name' => (string) implode(' ',$PecahStr),
+                'company' => '',
+                'address_1' => (string) $request->customer_address,
+                'address_2' => '',
+                'city' => '',
+                'state' => '',
+                'country' => 'INA',
             ]
         ];
+
+        // dd($data);
 
         $customer = $woocommerce->post('customers', $data);
 

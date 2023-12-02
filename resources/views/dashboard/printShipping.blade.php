@@ -46,11 +46,13 @@
         <tr >
             <th><center><a style="font-size: 50px;"> P </a></center></th>
             <th width="80%">
-                <div>
-                    <p></p>
+                <div class="row">
+                    <div class="col-8">
+                        {{-- <p class="text-center" style="font-size: 40px;">Blotter</p> --}}
+                    </div>
                     {{-- <a style="float: right;">{!! DNS2D::getBarcodeHTML(substr(str_shuffle("0123456789"), 0, 13), 'QRCODE') !!}</a> --}}
-                    <div style="float: right;" id="qrcode">
-
+                    <div class="col-4">
+                        <div style="float: right;" id="qrcode"></div>
                     </div>
                 </div>
             </th>
@@ -66,12 +68,12 @@
             <td colspan="2">
                 <div class="row ml-3">
                     <div class="col-6">
-                        <p class="lh-sm fs-5">
-                            Don Bimam 
+                        <p class="lh-sm fs-6">
+                            Blotter International
                             <br> 
-                            221 Baker Street
+                            JL TEUKU UMAR, PEKANBARU 28112 
                             <br>
-                            Santa Carla, CA 12345
+                            +62 822-8890-7898
                         </p>
                         
                     </div>
@@ -82,11 +84,9 @@
                     </div>
                     <div class="col-6">
                         <p class="lh-sm fs-5">
-                            Holly Golightly
+                            {{ $customer_name }}
                             <br>
-                            1428 Elm Street
-                            <br>
-                            San Junipero, CA 67809
+                            {{ $shipping}}
                         </p>
                         {{-- {{$shipping}} --}}
                     </div>
@@ -114,7 +114,7 @@
                 {{-- {{$cs->customer_track}} --}}
                 <center>
                     <h5>
-                        Tracking #: DX-PV54
+                        www.blotterism.com
                     </h5>
                 </center>
             </td>
@@ -134,9 +134,9 @@
 <script src={{url('vendor/qrcodejs/qrcode.min.js')}}></script>
 <script>
     const qrcode = new QRCode(document.getElementById('qrcode'), {
-        text: '{{$data->id}}',
-        width: 64,
-        height: 64,
+        text: 'www.blotterism.com',
+        width: 80,
+        height: 80,
         colorDark : "#000000",
         colorLight : "#ffffff",
         correctLevel : QRCode.CorrectLevel.H
