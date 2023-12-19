@@ -20,26 +20,27 @@
             <form action="{{route('products.labelPrint')}}" method="post">
                 @csrf
                 @foreach($labels as $label )
-               <div class="row">
-                   <div class="col-md-4">
-                       <div class="form-group">
-                           <label for="inputName">Name Product</label>
-                           <input type="text" name="name[]" value="{{$label->name}}"  id="inputName" class="form-control" readonly>
-                       </div>
-                   </div>
-                   <div class="col-md-4">
-                       <div class="form-group">
-                           <label for="inputName">Unit Price</label>
-                           <input type="text" name="unit_pirce[]" value="{{$label->unit_pirce}}"  id="inputName" class="form-control" readonly>
-                       </div>
-                   </div>
-                   <div class="col-md-4">
-                       <div class="form-group">
-                           <label for="inputName">qty</label>
-                           <input type="text" name="qty[]" value="{{$label->qty}}" id="inputName" class="form-control">
-                       </div>
-                   </div>
-               </div>
+                    <input type="hidden" name="product_id[]" value="{{$label->product_id}}">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="inputName">Name Product</label>
+                                <input type="text" name="name[]" value="{{$label->name}}"  id="inputName" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="inputName">Unit Price</label>
+                                <input type="text" name="unit_pirce[]" value="{{$label->unit_pirce}}"  id="inputName" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="inputName">qty</label>
+                                <input type="text" name="qty[]" value="{{$label->qty}}" id="inputName" class="form-control">
+                            </div>
+                        </div>
+                    </div>
                 @endforeach
                 <center><button type="submit" class="btn btn-success">Print</button></center>
             </form>

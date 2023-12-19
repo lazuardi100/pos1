@@ -31,30 +31,31 @@ class ProductController extends Controller
         foreach ($data as $s){
             $s->delete();
         }
-
-
         return redirect()->back();
 
     }
     public function labelPrint(Request $request){
         $tmpData=[];
         $tmp=[];
-        $as=0;
+        $product_count=0;
         $name = $request->name;
         $qty = $request->qty;
+        $product_id = $request->product_id;
         $unit_pirce = $request->unit_pirce;
         $ssd = 0;
+
         foreach ($request->qty as $a){
             $a = (int)$a;
             for ($i = 0;$i<$a;$i++){
-                $tmpData[$ssd] = $name[$as];
+                $tmpData[$ssd] = $name[$product_count];
                 $tmp[$ssd] =[
-                    'qty' => $qty[$as],
-                    'unit_pirce' =>$unit_pirce[$as]
+                    'qty' => $qty[$product_count],
+                    'unit_pirce' =>$unit_pirce[$product_count],
+                    'product_id' =>$product_id[$product_count]
                 ];
                 $ssd++;
             }
-            $as++;
+            $product_count++;
         }
 
         view()->share([
@@ -63,7 +64,7 @@ class ProductController extends Controller
             'count' => count($tmpData),
             'convert' => $this->convertUSD()
         ]);
-        return view('dashboard.printLabel');
+    return view('dashboard.printLabel');
     }
 
     public function actionLabel($id,$name,$price, Request $request){

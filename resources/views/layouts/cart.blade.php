@@ -296,8 +296,12 @@
                 // alert()
                 console.log(data);
                 console.log('success');
-                location.reload();
-
+                // redirect
+                window.location.replace("{{url('pos')}}");
+            },
+            error: function (data) {
+                console.log(data);
+                alert('Pilih Customer');
             }
         });
 
@@ -331,6 +335,10 @@
                 console.log('success');
                 location.reload();
 
+            },
+            error: function (data) {
+                console.log(data);
+                alert('Pilih Customer');
             }
         });
     }

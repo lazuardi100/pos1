@@ -15,8 +15,13 @@
   <head>
     <style>
       @page {
-        size: 40mm 40mm;
+        /* size: 47mm 47mm; */
         margin: 0;
+      }
+      @media print {
+        /* .label {
+          page-break-after: always;
+        } */
       }
       body {
         margin: 0;
@@ -62,11 +67,16 @@
     </style>
 
     <body>
+      @php
+        $counted_label = 0;
+      @endphp
       @foreach ($datas as $label)
         <div class="label">
           <div class="barcode">
             <div class="barcode-number">
-              {!! DNS1D::getBarcodeHTML($label->id, "C128",1.4,22) !!}
+              <canvas id={{$label->id}} class="canvas-barcode">
+
+              </canvas>
             </div>
             <div class="size">
               {{$label->size}}
@@ -85,6 +95,31 @@
             Rp. {{$label->price}}
           </div>
         </div>
+        @php
+          $counted_label++;
+        @endphp
+        @if ($counted_label % 6 == 0)
+          <div style="page-break-after: always;"></div>
+          {{-- add space 3mm --}}
+          <div style="height: 1mm;"></div>
+        @endif
       @endforeach
     </body>
+
+    <script src={{url('vendor/jsbarcode/JsBarcode.all.min.js')}}></script>
+
+    <script>
+      const canvas = document.querySelectorAll('.canvas-barcode');
+      canvas.forEach((item) => {
+        JsBarcode(item, item.id, {
+          format: "CODE128",
+          lineColor: "#000",
+          width: 1.4,
+          height: 25,
+          displayValue: false,
+          margin: 0
+        });
+      });
+      
+    </script>
 </html>

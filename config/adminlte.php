@@ -284,7 +284,7 @@ return [
         [
             'text'        => 'POS',
             'url'         => '/pos',
-            'icon'        => 'fas fa-folder',
+            'icon'        => 'fas fa-cash-register',
         ],
         [
             'text'        => 'Dashboard',
@@ -294,7 +294,7 @@ return [
         [
             'text'        => 'Transaction',
             'url'         => '/transaction',
-            'icon'        => 'fas fa-folder',
+            'icon'        => 'fas fa-receipt',
             'can'         => 'admin'
         ],
         [
@@ -303,12 +303,12 @@ return [
             'icon'        => 'fas fa-plus',
             'can'         => 'admin'
         ],
-        [
-            'text'        => 'Print Label',
-            'url'         => '/label',
-            'icon'        => 'fas fa-plus',
-            'can'         => 'admin'
-        ],
+        // [
+        //     'text'        => 'Print Label',
+        //     'url'         => '/label',
+        //     'icon'        => 'fas fa-tags',
+        //     'can'         => 'admin'
+        // ],
         [
             'text'        => 'Transfer Product',
             'url'         => '/transfer_product',
@@ -340,6 +340,7 @@ return [
                         ],
                         [
                             'text' => 'Print label',
+                            'icon' => 'fas fa-tags',
                             'url'  => '/products/label',
                             'can'         => 'admin'
                         ],

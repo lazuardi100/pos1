@@ -12,6 +12,26 @@ class LabelController extends Controller
         return view('dashboard.label.index');
     }
 
+    public function getAllProductWoo(Request $request){
+        $source = $request->source;
+        $data = [];
+
+        $woo_products = (array) $this->woocommerce()->get('products');
+
+        return response()->json([
+            'data' => $woo_products
+        ]);
+    }
+
+    public function getVariantsWoo(Request $request){
+        $product_id = $request->product_id;
+        $woo_product = (array) $this->woocommerce()->get('products/'.$product_id.'/variations');
+
+        return response()->json([
+            'data' => $woo_product
+        ]);
+    }
+
     public function printLabel(Request $request){
         $source = $request->source;
         $data = [];

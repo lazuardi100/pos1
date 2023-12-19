@@ -37,7 +37,11 @@
                 @foreach($products as $product)
                 <tr>
                     <td>{{$loop->iteration}}</td>
-                    <td><img src="{{$product->images[0]->src}}" width="50" height="50"></td>
+                    <td>
+                        @if ($product->images != [])
+                            <img src="{{$product->images[0]->src}}" width="50" height="50">
+                        @endif
+                    </td>
                     <td>{{$product->name}}</td>
                     <td>{{($product->sku == '') ? '-' : $product->sku}}</td>
                     <td>{{($product->stock_status == 'instock') ? 'in stock' : 'Out of stock'}}</td>

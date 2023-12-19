@@ -29,8 +29,12 @@
         outline: 1px dotted; 
         }
  
+    /* set horizontaly inline */
     .barcode{
-      text-align: left;
+        text-align: left;
+    }
+    .size-div{
+        text-align: right;
     }
     .size{
       text-align: right;
@@ -54,7 +58,7 @@
 @for($i=0;$i<$count;$i++)
     <?php
     //        dd();
-    $random = substr(str_shuffle("0123456789344"), 0, 13);
+    $random = $tmpas[$i]['product_id'];
     $belakang = explode(" - ",$tmpData[$i]);
 
     $ukuran = '';
@@ -91,7 +95,16 @@
     	
     	$cut_text = substr($text, 0, $new_pos);
     }
-    $sambungan = explode($cut_text, $text); 
+    try {
+        $sambungan = explode($cut_text, $text); 
+    } catch (\Throwable $th) {
+        $temp_text = explode(' ', $text);
+        $prefix = $temp_text[0];
+        $cut_text = $prefix;
+        $text = str_replace($prefix, '', $text);
+
+        $sambungan = ["", $text];
+    }
     // echo $cut_text.'<br>'.$sambungan['1'];
     
     // return;
@@ -100,11 +113,17 @@
     <div class="label">
         <div class="wrapper">
             <div class="barcode">
-                {!! DNS1D::getBarcodeHTML($gabung, "C128",0.9,30) !!}
+                <canvas id={{$gabung}} class="canvas-barcode"></canvas>
+                
+                {{-- {!! DNS1D::getBarcodeHTML($gabung, "C128",0.9,30) !!} --}}
                 {{--                <img src="https://scontent-sin6-4.xx.fbcdn.net/v/t39.30808-6/309359666_5458694490843021_3496997913162019013_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=730e14&_nc_ohc=7AoKx4PLJT8AX-XeJED&_nc_ht=scontent-sin6-4.xx&oh=00_AT8XBtrbeEFFmhQNQpLPz8o0rYPJpSRr-YP_ZvxVrZXnOg&oe=6336E458" height="40cm" width="120cm">--}}
                 <br>
                 <a style='font-size:11px'>{{$gabung}}</a>
             </div>
+            <div class="size-div">
+                <p>{{$ukuran}}</p>
+            </div>
+
             <!--<div class="size">-->
             <!--    <br>  {{$ukuran}}-->
             <!--</div>-->
@@ -114,7 +133,7 @@
 
         <div class="price">
             <?php
-            $harga = 8500 * ($tmpas[$i]['qty'] * $tmpas[$i]['unit_pirce']);
+            $harga = 15000 * ($tmpas[$i]['qty'] * $tmpas[$i]['unit_pirce']);
             $rupiah=number_format($harga,2,',','.');
             ?>
             IDR {{$rupiah}}
@@ -129,6 +148,22 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
 
+<script src={{url('vendor/jsbarcode/JsBarcode.all.min.js')}}></script>
+
+<script>
+    const canvas = document.querySelectorAll('.canvas-barcode');
+    canvas.forEach((item) => {
+        JsBarcode(item, item.id, {
+        format: "CODE128",
+        lineColor: "#000",
+        width: 1,
+        height: 30,
+        displayValue: false,
+        margin: 0
+        });
+    });
+
+</script>
 </body>
 
 </html>

@@ -126,6 +126,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::group(['prefix' => 'label', 'as' => 'label.', 'middleware'=> 'auth'], function(){
         Route::get('/', [LabelController::class, 'index'])->name('index');
+        Route::get('/getWooProducts', [LabelController::class, 'getAllProductWoo'])->name('getWooProducts');
+        Route::get('/getVariantsWoo', [LabelController::class, 'getVariantsWoo'])->name('getVariantsWoo');
         Route::post('/print', [LabelController::class, 'printLabel'])->name('print');
     });
     Route::get('expense/destroys/{id}', [App\Http\Controllers\ExpenseController::class, 'destroy'])->name('expense.destroys');
