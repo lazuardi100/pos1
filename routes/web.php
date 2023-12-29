@@ -83,6 +83,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/actionLabel/{id}/{name}/{price}', [App\Http\Controllers\ProductController::class, 'actionLabel'])->name('actionLabel');
         Route::post('/labelPrint', [App\Http\Controllers\ProductController::class, 'labelPrint'])->name('labelPrint');
         Route::get('/clear/label', [App\Http\Controllers\ProductController::class, 'clearLabel'])->name('clear.label');
+        Route::get('/label/remove/{id}', [App\Http\Controllers\ProductController::class, 'removeLabel'])->name('remove.label');
 
         // Route::get('/', [App\Http\Controllers\ProductController::class, 'index'])->name('index');
     });

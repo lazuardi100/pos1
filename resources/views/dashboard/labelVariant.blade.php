@@ -34,11 +34,14 @@
                                 <input type="text" name="unit_pirce[]" value="{{$label->unit_pirce}}"  id="inputName" class="form-control" readonly>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <div class="form-group">
                                 <label for="inputName">qty</label>
                                 <input type="text" name="qty[]" value="{{$label->qty}}" id="inputName" class="form-control">
                             </div>
+                        </div>
+                        <div class="col-md-2 d-flex flex-column justify-content-center">
+                            <a href="{{route('products.remove.label',$label->product_id)}}" class="btn btn-danger mt-3">remove</a>
                         </div>
                     </div>
                 @endforeach

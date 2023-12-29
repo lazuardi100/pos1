@@ -32,7 +32,12 @@ class ProductController extends Controller
             $s->delete();
         }
         return redirect()->back();
+    }
 
+    public function removeLabel ($id){
+        $data = Label::where('user_id','=',Auth::user()->id)->where('product_id','=',$id)->first();
+        $data->delete();
+        return redirect()->back();
     }
     public function labelPrint(Request $request){
         $tmpData=[];
