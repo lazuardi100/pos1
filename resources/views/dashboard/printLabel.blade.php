@@ -7,9 +7,15 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 
   <style>
-    body {
-       
+
+    @media print {
+        @page {
+            /* size with width 4cm and height same as content */
+            size: 2.85cm 2.85cm;
+            margin: 3px;
+            }
         }
+        
     .label{
        
         width: 4cm; 
@@ -74,95 +80,93 @@
 <body>
 {{--@dd($tmp);--}}
 
-<div class="label-container">
-    @for($i=0;$i<$count;$i++)
-        <?php
-        //        dd();
-        $random = $tmpas[$i]['product_id'];
-        $belakang = explode(" - ",$tmpData[$i]);
-    
-        $ukuran = '';
-        $tmp = '';
-        if (count($belakang) == 2){
-            $s = strtolower($belakang[1]);
-            $ukuran = $belakang[1];
-            if ($s == 's'){
-                $tmp = '1';
-            }elseif ($s == 'm'){
-                $tmp = '2';
-            }elseif ($s == 'l'){
-                $tmp = '3';
-            }elseif ($s == 'xl'){
-                $tmp = '4';
-            }elseif ($s == 'xxl'){
-                $tmp = '5';
-            }else {
-                $tmp = '0';
-            }
-        }else{
+@for($i=0;$i<$count;$i++)
+    <?php
+    //        dd();
+    $random = $tmpas[$i]['product_id'];
+    $belakang = explode(" - ",$tmpData[$i]);
+
+    $ukuran = '';
+    $tmp = '';
+    if (count($belakang) == 2){
+        $s = strtolower($belakang[1]);
+        $ukuran = $belakang[1];
+        if ($s == 's'){
+            $tmp = '1';
+        }elseif ($s == 'm'){
+            $tmp = '2';
+        }elseif ($s == 'l'){
+            $tmp = '3';
+        }elseif ($s == 'xl'){
+            $tmp = '4';
+        }elseif ($s == 'xxl'){
+            $tmp = '5';
+        }else {
             $tmp = '0';
         }
-        $gabung  = $random.'-'.$tmp;
-        
-        
-        $text = $tmpData[$i];
-        
-        $num_char = 8;
-        $cut_text = substr($text, 0, $num_char);
-        
-        if ($text[$num_char - 1] != ' ') {
-            $new_pos = strrpos($cut_text, ' ');
-            
-            $cut_text = substr($text, 0, $new_pos);
-        }
-        try {
-            $sambungan = explode($cut_text, $text); 
-        } catch (\Throwable $th) {
-            $temp_text = explode(' ', $text);
-            $prefix = $temp_text[0];
-            $cut_text = $prefix;
-            $text = str_replace($prefix, '', $text);
+    }else{
+        $tmp = '0';
+    }
+    $gabung  = $random.'-'.$tmp;
     
-            $sambungan = ["", $text];
-        }
-        // echo $cut_text.'<br>'.$sambungan['1'];
-        
-        // return;
-        ?>
-        
-        <div class="label">
-            <div class="wrapper">
-                <div class="barcode">
-                    <canvas id={{$gabung}} class="canvas-barcode"></canvas>
-                    
-                    {{-- {!! DNS1D::getBarcodeHTML($gabung, "C128",0.9,30) !!} --}}
-                    {{--                <img src="https://scontent-sin6-4.xx.fbcdn.net/v/t39.30808-6/309359666_5458694490843021_3496997913162019013_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=730e14&_nc_ohc=7AoKx4PLJT8AX-XeJED&_nc_ht=scontent-sin6-4.xx&oh=00_AT8XBtrbeEFFmhQNQpLPz8o0rYPJpSRr-YP_ZvxVrZXnOg&oe=6336E458" height="40cm" width="120cm">--}}
-                    <br>
-                    <a style='font-size:11px'>{{$gabung}}</a>
-                </div>
-                <div class="size-div">
-                    <p>{{$ukuran}}</p>
-                </div>
     
-                <!--<div class="size">-->
-                <!--    <br>  {{$ukuran}}-->
-                <!--</div>-->
+    $text = $tmpData[$i];
+    
+    $num_char = 8;
+    $cut_text = substr($text, 0, $num_char);
+    
+    if ($text[$num_char - 1] != ' ') {
+        $new_pos = strrpos($cut_text, ' ');
+        
+        $cut_text = substr($text, 0, $new_pos);
+    }
+    try {
+        $sambungan = explode($cut_text, $text); 
+    } catch (\Throwable $th) {
+        $temp_text = explode(' ', $text);
+        $prefix = $temp_text[0];
+        $cut_text = $prefix;
+        $text = str_replace($prefix, '', $text);
+
+        $sambungan = ["", $text];
+    }
+    // echo $cut_text.'<br>'.$sambungan['1'];
+    
+    // return;
+    ?>
+    
+    <div class="label">
+        <div class="wrapper">
+            <div class="barcode">
+                <canvas id={{$gabung}} class="canvas-barcode"></canvas>
+                
+                {{-- {!! DNS1D::getBarcodeHTML($gabung, "C128",0.9,30) !!} --}}
+                {{--                <img src="https://scontent-sin6-4.xx.fbcdn.net/v/t39.30808-6/309359666_5458694490843021_3496997913162019013_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=730e14&_nc_ohc=7AoKx4PLJT8AX-XeJED&_nc_ht=scontent-sin6-4.xx&oh=00_AT8XBtrbeEFFmhQNQpLPz8o0rYPJpSRr-YP_ZvxVrZXnOg&oe=6336E458" height="40cm" width="120cm">--}}
+                <br>
+                <a style='font-size:11px'>{{$gabung}}</a>
             </div>
-            <p style='font-size:8px'>{!! $cut_text.'<br>'.$sambungan['1'] !!}</p>
-                    <!--<p>{{$tmpData[$i]}}</p>-->
-    
-            <div class="price">
-                <?php
-                $harga = 15000 * ($tmpas[$i]['qty'] * $tmpas[$i]['unit_pirce']);
-                $rupiah=number_format($harga,2,',','.');
-                ?>
-                IDR {{$rupiah}}
+            <div class="size-div">
+                <p>{{$ukuran}}</p>
             </div>
-            <br>
+
+            <!--<div class="size">-->
+            <!--    <br>  {{$ukuran}}-->
+            <!--</div>-->
         </div>
-    
-    @endfor
-</div>
+        <p style='font-size:8px'>{!! $cut_text.'<br>'.$sambungan['1'] !!}</p>
+                <!--<p>{{$tmpData[$i]}}</p>-->
+
+        <div class="price">
+            <?php
+            $harga = 15000 * ($tmpas[$i]['qty'] * $tmpas[$i]['unit_pirce']);
+            $rupiah=number_format($harga,2,',','.');
+            ?>
+            IDR {{$rupiah}}
+        </div>
+        <br>
+    </div>
+
+@endfor
 
 <script>
     // window.addEventListener("load", window.print());
