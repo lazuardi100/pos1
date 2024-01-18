@@ -125,8 +125,8 @@ class ProductController extends Controller
 
         $a = $woocommerce->http->getResponse();
         $headers = $a->getHeaders();
-        $totalPages = $headers['X-WP-TotalPages'];
-        $total = $headers['X-WP-Total'];
+        $totalPages = $headers['x-wp-totalpages'];
+        $total = $headers['x-wp-total'];
         // $current_page = '1';
 
         $array = new Paginator($array, $total, '10', $page, [
@@ -161,8 +161,8 @@ class ProductController extends Controller
 
         $a = $woocommerce->http->getResponse();
         $headers = $a->getHeaders();
-        $totalPages = $headers['X-WP-TotalPages'];
-        $total = $headers['X-WP-Total'];
+        $totalPages = $headers['x-wp-totalpages'];
+        $total = $headers['x-wp-total'];
         // $current_page = '1';
 
         $array = new Paginator($array, $total, '10', $page, [
