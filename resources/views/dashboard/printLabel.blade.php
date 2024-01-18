@@ -158,10 +158,15 @@
 
         <div class="price">
             <?php
-            $harga = 15000 * ($tmpas[$i]['qty'] * $tmpas[$i]['unit_pirce']);
-            $rupiah=number_format($harga,2,',','.');
+                $harga = ($tmpas[$i]['qty'] * $tmpas[$i]['unit_pirce']);
+                $rupiah=number_format($harga,2,',','.');
+                if ($harga > 1000){
+                    $currency = "IDR";
+                }else{
+                    $currency = "USD";
+                }
             ?>
-            IDR {{$rupiah}}
+            {{$currency." ".$rupiah}}
         </div>
         <br>
     </div>

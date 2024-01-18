@@ -52,6 +52,17 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Striped Full Width Table</h3>
+            <br>
+            {{-- select currency --}}
+            <label for="">Select Currency</label>
+            <select name="currency" id="currency" class="form-control" onchange="currencyChange()">
+                <option value="IDR" {{Request::get('currency') == 'IDR' ? 'selected' : ''}}>
+                    IDR
+                </option>
+                <option value="USD" {{Request::get('currency') == 'USD' ? 'selected' : ''}}>
+                    USD
+                </option>
+            </select>
         </div>
         <!-- /.card-header -->
         <div class="card-body p-0">
@@ -92,8 +103,24 @@
                         {{--                    </td>--}}
                         <td>
                             @if($product->type=='simple')
+                            @php
+                                $currency = Request::get('currency');
+                                if ($currency == 'USD'){
+                                    $price = $product->price;
+                                }else{
+                                    $price = $product->meta_data;
+                                    
+                                    $index = array_search('_alg_currency_switcher_per_product_regular_price_IDR', array_column($price, 'key'));
+                                    
+                                    if ($index !== false) {
+                                        $price = $price[$index]->value;
+                                    }else{
+                                        $price = $product->price;
+                                    }
+                                }
+                            @endphp
                             <div class="btn-group">
-                                <a href="{{route('products.actionLabel',[$product->id,$product->name,$product->price])}}" class="btn btn-info">
+                                <a href="{{route('products.actionLabel',[$product->id,$product->name,$price])}}" class="btn btn-info">
                                     <i class="fas fa-plus"></i>
                                 </a>
                             </div>
@@ -130,4 +157,13 @@
 @stop
 
 @section('js')
+<script>
+    function currencyChange() {
+        let currency = $('#currency').val();
+        const urlParams = window.location.search;
+        const params = new URLSearchParams(urlParams);
+        params.set('currency', currency);
+        window.location.search = params;
+    }
+</script>
 @stop
