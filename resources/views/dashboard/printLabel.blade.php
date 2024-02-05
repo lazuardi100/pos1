@@ -158,7 +158,7 @@
 
         <div class="price">
             <?php
-                $harga = ($tmpas[$i]['qty'] * $tmpas[$i]['unit_pirce']);
+                $harga = ($tmpas[$i]['unit_pirce']);
                 $rupiah=number_format($harga,2,',','.');
                 if ($harga > 1000){
                     $currency = "IDR";

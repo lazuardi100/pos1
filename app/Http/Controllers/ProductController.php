@@ -125,8 +125,13 @@ class ProductController extends Controller
 
         $a = $woocommerce->http->getResponse();
         $headers = $a->getHeaders();
-        $totalPages = $headers['x-wp-totalpages'];
-        $total = $headers['x-wp-total'];
+        if (app()->environment('local')) {
+            $totalPages = $headers['X-WP-TotalPages'];
+            $total = $headers['X-WP-Total'];
+        } else {
+            $totalPages = $headers['x-wp-totalpages'];
+            $total = $headers['x-wp-total'];
+        }
         // $current_page = '1';
 
         $array = new Paginator($array, $total, '10', $page, [
@@ -137,10 +142,11 @@ class ProductController extends Controller
         // dd($array);
         //        dd($data);
         $labels = Label::whereUserId(Auth::user()->id)->get();
-
+        // dd($array);
         view()->share([
             'products' => $array,
-            'labels' => $labels
+            'labels' => $labels,
+            'this' => $this
         ]);
 
         return view('dashboard.label');
@@ -161,8 +167,13 @@ class ProductController extends Controller
 
         $a = $woocommerce->http->getResponse();
         $headers = $a->getHeaders();
-        $totalPages = $headers['x-wp-totalpages'];
-        $total = $headers['x-wp-total'];
+        if (app()->environment('local')) {
+            $totalPages = $headers['X-WP-TotalPages'];
+            $total = $headers['X-WP-Total'];
+        } else {
+            $totalPages = $headers['x-wp-totalpages'];
+            $total = $headers['x-wp-total'];
+        }
         // $current_page = '1';
 
         $array = new Paginator($array, $total, '10', $page, [
@@ -377,6 +388,15 @@ class ProductController extends Controller
         $data = $woocommerce->get('products/'.$id);
 
         $sql = Product::where('api_product_api','=',$id)->first();
+
+        if($sql == null){
+            $sql = new Product();
+            $sql->api_product_api = $id;
+            $sql->price_modal = 0;
+            $sql->price_sale = $data->price;
+            $sql->barcode = $data->sku;
+            $sql->save();
+        }
 
         $categories = $this->woocommerce()->get('products/categories');
         $tags = $this->woocommerce()->get('products/tags');

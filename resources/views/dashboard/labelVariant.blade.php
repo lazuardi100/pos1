@@ -107,7 +107,7 @@
 
                         <td>
                             <div class="btn-group">
-                                <a href="{{route('products.actionLabel',[$product->id,$get->name.' - '.$product->attributes[0]->option,$price])}}" class="btn btn-info">
+                                <a href="{{route('products.actionLabel',[$product->sku,$get->name.' - '.$product->attributes[0]->option,$price])}}" class="btn btn-info">
                                     <i class="fas fa-plus"></i>
                                 </a>
                             </div>

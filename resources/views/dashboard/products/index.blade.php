@@ -44,7 +44,19 @@
                     </td>
                     <td>{{$product->name}}</td>
                     <td>{{($product->sku == '') ? '-' : $product->sku}}</td>
-                    <td>{{($product->stock_status == 'instock') ? 'in stock' : 'Out of stock'}}</td>
+                    <td>
+                        @php
+                            if ($product->stock_quantity != null) {
+                                echo $product->stock_quantity;
+                            } else {
+                                if ($product->stock_status == 'instock') {
+                                    echo 'in stock (no quantity)';
+                                } else {
+                                    echo 'Out of stock';
+                                }
+                            }
+                        @endphp
+                    </td>
                     <?php
                     $harga = (double) $product->price * (double)8500;
                     $rupiah=number_format($harga,2,',','.');

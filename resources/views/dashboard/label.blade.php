@@ -95,40 +95,56 @@
 
                         <td>{{$product->type}}</td>
                         <td>
-                        {!! DNS1D::getBarcodeHTML($product->id, "C128",1.4,22) !!}
+                        {!! DNS1D::getBarcodeHTML($product->sku, "C128",1.4,22) !!}
 
-                        {{--                    @foreach($product->tags as $tag)--}}
-                        {{--                        {{$tag->name}},--}}
-                        {{--                        @endforeach--}}
-                        {{--                    </td>--}}
                         <td>
                             @if($product->type=='simple')
-                            @php
-                                $currency = Request::get('currency');
-                                if ($currency == 'USD'){
-                                    $price = $product->price;
-                                }else{
-                                    $price = $product->meta_data;
-                                    
-                                    $index = array_search('_alg_currency_switcher_per_product_regular_price_IDR', array_column($price, 'key'));
-                                    
-                                    if ($index !== false) {
-                                        $price = $price[$index]->value;
-                                    }else{
+                                @php
+                                    $currency = Request::get('currency');
+                                    if ($currency == 'USD'){
                                         $price = $product->price;
+                                    }else{
+                                        $price = $product->meta_data;
+                                        
+                                        $index = array_search('_alg_currency_switcher_per_product_regular_price_IDR', array_column($price, 'key'));
+                                        
+                                        if ($index !== false) {
+                                            $price = $price[$index]->value;
+                                        }else{
+                                            $price = $product->price;
+                                        }
                                     }
-                                }
-                            @endphp
-                            <div class="btn-group">
-                                <a href="{{route('products.actionLabel',[$product->id,$product->name,$price])}}" class="btn btn-info">
-                                    <i class="fas fa-plus"></i>
-                                </a>
-                            </div>
+                                @endphp
+                                <div class="btn-group">
+                                    <a href="{{route('products.actionLabel',[$product->sku,$product->name,$price])}}" class="btn btn-info">
+                                        <i class="fas fa-plus"></i>
+                                    </a>
+                                </div>
                             @else
                                 <div class="btn-group">
                                     <a href="{{route('products.labelVariant',[$product->id])}}" class="btn btn-info">
                                         show variant
                                     </a>
+                                    @php
+                                    // base controller
+                                        $base = new \App\Http\Controllers\Controller;
+                                        $woo = $base->woocommerce();
+                                        $variants = $woo->get('products/'.$product->id.'/variations'); 
+                                    @endphp
+                                    {{-- dropdown --}}
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <div class="dropdown-menu" role="menu">
+                                            @foreach($variants as $variant)
+                                                <a href="#">
+                                                    {{$variant->attributes[0]->option}}
+                                                </a>
+                                            @endforeach
+                                        </div>
+                                    </div>
                                 </div>
                             @endif
                         </td>
