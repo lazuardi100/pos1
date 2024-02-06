@@ -121,6 +121,10 @@ class ProductController extends Controller
         $params = [
             'page' => $page,
         ];
+
+        if($request->search != null){
+            $params['search'] = $request->search;
+        }
         $array = $woocommerce->get('products', $params);
 
         $a = $woocommerce->http->getResponse();

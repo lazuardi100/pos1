@@ -31,7 +31,7 @@
             <div class="col-md-8 offset-md-2">
                 <form action="{{route('pos')}}" method="get">
                     <div class="input-group">
-                        <input type="search" name="search" class="form-control form-control-lg" placeholder="Type your keywords here">
+                        <input type="search" name="search" class="form-control form-control-lg" placeholder="Type your keywords here" value="{{Request::get('search')}}">
                         <div class="input-group-append">
                             <button type="submit" class="btn btn-lg btn-default">
                                 <i class="fa fa-search"></i>

@@ -63,6 +63,19 @@
                     USD
                 </option>
             </select>
+
+            {{-- search --}}
+            <form action="{{route('products.label')}}" method="get">
+                <label for="">Search product</label>
+                <div class="input-group">
+                    <input type="search" name="search" class="form-control form-control" placeholder="Type your keywords here" value="{{Request::get('search')}}">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-default">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
         <!-- /.card-header -->
         <div class="card-body p-0">
