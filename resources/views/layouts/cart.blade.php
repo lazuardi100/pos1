@@ -1,4 +1,4 @@
-
+    
     <div class="form-group">
         <center>
         <!--<label for="">Hold</label>-->
@@ -16,10 +16,14 @@
         <div class="input-group ">
             <label for=""></label>
 
-            <select class="form-control" onchange="discount($(this).val())" name="customer_id" id="customer_id">
+            <select class="customer_select form-control" onchange="discount($(this).val())" name="customer_id" id="customer_id">
                 <option >Pilih Customer</option>
-            @foreach($customers as $customer)
-                    <option value="{{$customer->id}}">{{$customer->first_name}} {{$customer->last_name}} - {{$customer->id}}</option>
+                @foreach($customers as $customer)
+                    @if($customer->id == $carts[0]->customer_id)
+                        <option value="{{$customer->id}}" selected>{{$customer->first_name}} {{$customer->last_name}} - {{$customer->id}}</option>
+                    @else
+                        <option value="{{$customer->id}}">{{$customer->first_name}} {{$customer->last_name}} - {{$customer->id}}</option>
+                    @endif
                 @endforeach
             </select>
 
@@ -46,14 +50,13 @@
             <td>act</td>
         </tr>
 
-
         @foreach($carts as $cart)
 
             <tr>
 
                 <td> {{$cart->name}}</td>
                 <td><div class="price">{{$cart->price}}</div></td>
-                <td><input type="text" value="{{$cart->qty}}" id="qty" onchange="change({{$cart->id,}},$(this).val())" name="qty" style="width: 30px"></td>
+                <td><input type="text" value="{{$cart->qty}}" id="qty" onchange="change({{$cart->id}},$(this).val())" name="qty" style="width: 30px"></td>
                 <td><a id="subPrice">{{$cart->subTotal}}</a></td>
                 <td>
                     <a href="{{route('delete.cart',$cart->id)}}">
@@ -384,9 +387,6 @@
 
             }
         });
-
-        x()
-
     }
 
     var x = function total (){
