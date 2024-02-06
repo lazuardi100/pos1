@@ -345,6 +345,13 @@ class HomeController extends Controller
             'page' => $page,
         ];
 
+        if($request->search != null){
+            $params = [
+                'search' => $request->search,
+                'page' => $page,
+            ];
+        }
+
         $woocommerce = $this->woocommerce();
         $array = $woocommerce->get('products', $params);
 
@@ -357,15 +364,11 @@ class HomeController extends Controller
             $totalPages = $headers['x-wp-totalpages'];
             $total = $headers['x-wp-total'];
         }
-        // $current_page = '1';
 
         $array = new Paginator($array, $total, '10', $page, [
             'path' => $request->url(),
             'query' => $request->query(),
         ]);
-
-        // dd($array);
-        //        dd($data);
 
         $discount = Discount::all();
 
@@ -382,7 +385,6 @@ class HomeController extends Controller
 
     }
     public function posSearch(Request $request){
-//        dd($request->search);
         if ($request->page == null || $request->page == '') {
             $page = '1';
         } else {
@@ -391,9 +393,7 @@ class HomeController extends Controller
 
 
         $woocommerce = $this->woocommerce();
-
-        $array = $woocommerce->get('products?search=' . $request->search);
-
+        $array = $woocommerce->get('products', ['search' => $request->search]);
 
         $a = $woocommerce->http->getResponse();
         $headers = $a->getHeaders();
