@@ -16,7 +16,7 @@
             <center>
             <a href="{{route('products.clear.label')}}" class="btn btn-danger">clear</a>
             </center>
-            <form action="{{route('products.labelPrint')}}" method="post">
+            <form action="{{route('products.labelPrint')}}" method="post" target="_blank">
                 @csrf
                 @foreach($labels as $label )
                     <input type="hidden" name="product_id[]" value="{{$label->product_id}}">
