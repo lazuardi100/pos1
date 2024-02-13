@@ -344,6 +344,12 @@ return [
                             'url'  => '/products/label',
                             'can'         => 'admin'
                         ],
+                        [
+                            'text' => 'Stock Management',
+                            'icon' => 'fas fa-boxes',
+                            'url'  => '/products/label',
+                            'can'         => 'admin'
+                        ],
                     ],
                 ],
                 [

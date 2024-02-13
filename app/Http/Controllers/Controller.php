@@ -43,10 +43,10 @@ class Controller extends BaseController
     
     public function woocommerce(){
         $woocommerce = new Client(
-            'https://shop.blotterism.com/',
-            // 'http://0.0.0.0:8081/',
-            'ck_2961b9f25e3473304a4851b32ca91abb48ffef82',
-            'cs_be8b74c01e1593b65117d1974a99060a2902de17',
+            // 'https://shop.blotterism.com/',
+            'http://0.0.0.0:8081/',
+            'ck_fb94ebcd161b6ad4b376e29a7eec108c9c3babe2',
+            'cs_e3a99fb8bfdc0544de27b6adada9c47083c96d16',
             [
                 'version' => 'wc/v3',
                 'verify_ssl' => false,
@@ -56,8 +56,8 @@ class Controller extends BaseController
         );
 
         // old key
-        // key: ck_ca2e183c950dcfb0b93a9d7e31039da4bd639ac6
-        // secret: cs_2b8417cff8fc7dc2c501d25c0305f8ab125eb8a1
+        // key: ck_2961b9f25e3473304a4851b32ca91abb48ffef82
+        // secret: cs_be8b74c01e1593b65117d1974a99060a2902de17
 
         return $woocommerce;
     }

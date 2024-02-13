@@ -424,18 +424,16 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-//        dd($request->type);
         $woocommerce = $this->woocommerce();
 
-        $cek = $woocommerce->get('products/'.$id);;
+        $cek = $woocommerce->get('products/'.$id);
         $type = $cek->type;
-//        dd($cek);
         $jenis_input = $request->jenis_input;
         $jumlah_input = $request->jumlah_input;
         $tmpUrl = [];
         $i= 0;
 
-
+        dd($cek);
         if ($request->file('image')){
             $files = $request->file('image');
             foreach ($files as $file) {
@@ -453,8 +451,6 @@ class ProductController extends Controller
 
 
         if ( $type == 'simple'){
-//            $type = 'simple';
-//            dd($type);
 
             $data = [
                 'name' => $request->name,
@@ -468,26 +464,12 @@ class ProductController extends Controller
                     [
                         'id' => $request->category
                     ]
-                ],
-                'images' => [
-                    [
-                        'src' => 'http://demo.woothemes.com/woocommerce/wp-content/uploads/sites/56/2013/06/T_2_front.jpg'
-                    ]
                 ]
             ];
 
-//            dd($data);
-//            $ls = $this->woocommerce()->post('products', $data);
             $ls = $this->woocommerce()->put('products/'.$id,$data);
 
-        }
-        else{
-
-//            dd('dwq');
-
-
-//            dd($type);
-
+        } else {
             $data = [
                 'name' => $request->name,
                 'type' => $type,
@@ -500,11 +482,6 @@ class ProductController extends Controller
                 'categories' => [
                     [
                         'id' => $request->category
-                    ]
-                ],
-                'images' => [
-                    [
-                        'src' => 'http://demo.woothemes.com/woocommerce/wp-content/uploads/sites/56/2013/06/T_2_front.jpg'
                     ]
                 ],
                 'attributes' => array(
