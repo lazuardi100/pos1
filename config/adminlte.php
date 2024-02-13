@@ -347,8 +347,8 @@ return [
                         [
                             'text' => 'Stock Management',
                             'icon' => 'fas fa-boxes',
-                            'url'  => '/products/label',
-                            'can'         => 'admin'
+                            'url'  => '/products/stock',
+                            'can'  => 'admin'
                         ],
                     ],
                 ],

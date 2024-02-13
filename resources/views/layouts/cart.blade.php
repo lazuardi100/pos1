@@ -18,15 +18,17 @@
 
             <select class="customer_select form-control" onchange="discount($(this).val())" name="customer_id" id="customer_id">
                 <option >Pilih Customer</option>
-                @if(count($carts) > 0)
-                    @foreach($customers as $customer)
+                @foreach($customers as $customer)
+                    @if(count($carts) > 0)
                         @if($customer->id == $carts[0]->customer_id)
                             <option value="{{$customer->id}}" selected>{{$customer->first_name}} {{$customer->last_name}} - {{$customer->id}}</option>
                         @else
                             <option value="{{$customer->id}}">{{$customer->first_name}} {{$customer->last_name}} - {{$customer->id}}</option>
                         @endif
-                    @endforeach
-                @endif
+                    @else
+                        <option value="{{$customer->id}}">{{$customer->first_name}} {{$customer->last_name}} - {{$customer->id}}</option>
+                    @endif
+                @endforeach
             </select>
 
             <div class="input-group-append">

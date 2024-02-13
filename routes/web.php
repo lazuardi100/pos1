@@ -3,6 +3,7 @@
 use App\Http\Controllers\GlobalProductController;
 use App\Http\Controllers\LabelController;
 use App\Http\Controllers\StockTransferController;
+use App\Http\Controllers\Woo\StockController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -85,6 +86,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/clear/label', [App\Http\Controllers\ProductController::class, 'clearLabel'])->name('clear.label');
         Route::get('/label/remove/{id}', [App\Http\Controllers\ProductController::class, 'removeLabel'])->name('remove.label');
 
+        Route::group(['prefix' => 'stock', 'as' => 'stock.'], function(){
+            Route::get('/', [StockController::class, 'index'])->name('index');
+        });
         // Route::get('/', [App\Http\Controllers\ProductController::class, 'index'])->name('index');
     });
 
@@ -117,8 +121,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/import', [App\Http\Controllers\CategoryController::class, 'import'])->name('import');
         Route::get('/{page}', [App\Http\Controllers\CategoryController::class, 'index'])->name('index');
         Route::get('/destroy/{id}', [App\Http\Controllers\CategoryController::class, 'destroy'])->name('destroys');
-        Route::get('/a/create', [\App\Http\Controllers\CategoryController::class, 'create'])->name('create');
-        Route::post('/store', [\App\Http\Controollers\CategoryController::class, 'store'])->name('store');
+        Route::get('/a/create', [App\Http\Controllers\CategoryController::class, 'create'])->name('create');
+        Route::post('/store', [App\Http\Controllers\CategoryController::class, 'store'])->name('store');
         Route::get('/edit/{id}', [\App\Http\Controllers\CategoryController::class, 'edit'])->name('edit');
         Route::post('/edit/{id}', [\App\Http\Controllers\CategoryController::class, 'update'])->name('update');
 

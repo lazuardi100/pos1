@@ -177,7 +177,7 @@
                 </tbody>
             </table>
         </div>
-    {{ $products->links('vendor.pagination.bootstrap-4') }}
+        {{ $products->links('vendor.pagination.bootstrap-4') }}
 
 
     <!-- /.card-body -->
