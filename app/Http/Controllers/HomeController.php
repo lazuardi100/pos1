@@ -526,6 +526,7 @@ class HomeController extends Controller
 
     public function index($filter = '')
     {
+        return redirect()->route('pos');
         $expense = Expense::all();
 
         $tmpExpense = 0;

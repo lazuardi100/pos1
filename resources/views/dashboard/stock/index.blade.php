@@ -3,22 +3,7 @@
 @section('title', 'Stock')
 
 @section('content')
-    <h1>Hello world</h1>
     <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Striped Full Width Table</h3>
-            <br>
-            {{-- select currency --}}
-            <label for="">Select Currency</label>
-            <select name="currency" id="currency" class="form-control" onchange="currencyChange()">
-                <option value="IDR" {{Request::get('currency') == 'IDR' ? 'selected' : ''}}>
-                    IDR
-                </option>
-                <option value="USD" {{Request::get('currency') == 'USD' ? 'selected' : ''}}>
-                    USD
-                </option>
-            </select>
-
             {{-- search --}}
             <form action="{{route('products.stock.index')}}" method="get">
                 <label for="">Search product</label>
@@ -57,14 +42,13 @@
                         <td>{{$product->stock_status}}</td>
                         <td>{{$product->stock_quantity}}</td>
                         <td>{{$product->type}}</td>
-                        <form action="" method="post">
-                            <td>
-                                <input type="number" name="stock" class="form-control" value="{{$product->stock_quantity}}">
-                            </td>
-                            <td>
-                                <button type="submit" class="btn btn-success">Change</button>
-                            </td>
-                        </form>
+                        <td>
+                            @if ($product->type == 'variable')
+                                <a href="{{route('products.stock.variant.index', $product->id)}}" class="btn btn-primary">Variants</a>
+                            @else
+                                <a href="{{route('products.stock.show', $product->id)}}" class="btn btn-primary">Edit</a>
+                            @endif
+                        </td>
                     </tr>
                 @endforeach
 

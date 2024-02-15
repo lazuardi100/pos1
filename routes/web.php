@@ -88,6 +88,13 @@ Route::middleware(['auth'])->group(function () {
 
         Route::group(['prefix' => 'stock', 'as' => 'stock.'], function(){
             Route::get('/', [StockController::class, 'index'])->name('index');
+            Route::get('/show/{id}', [StockController::class, 'show'])->name('show');
+            Route::post('/update', [StockController::class, 'update'])->name('update');
+            Route::group(['prefix' => 'variant', 'as' => 'variant.'], function(){
+                Route::get('/{id}', [StockController::class, 'variant'])->name('index');
+                Route::get('/edit/{id}/{variant_id}', [StockController::class, 'variantShow'])->name('show');
+                Route::post('/update', [StockController::class, 'variantUpdate'])->name('update');
+            });
         });
         // Route::get('/', [App\Http\Controllers\ProductController::class, 'index'])->name('index');
     });
