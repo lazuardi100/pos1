@@ -42,11 +42,19 @@ class Controller extends BaseController
     }
     
     public function woocommerce(){
+        if (env('APP_ENV_REAL') == 'local') {
+            $url = 'http://0.0.0.0:8081/';
+            $key = 'ck_fb94ebcd161b6ad4b376e29a7eec108c9c3babe2';
+            $secret = 'cs_e3a99fb8bfdc0544de27b6adada9c47083c96d16';
+        } else {
+            $url = 'https://shop.blotterism.com/';
+            $key = 'ck_2961b9f25e3473304a4851b32ca91abb48ffef82';
+            $secret = 'cs_be8b74c01e1593b65117d1974a99060a2902de17';
+        }
         $woocommerce = new Client(
-            // 'https://shop.blotterism.com/',
-            'http://0.0.0.0:8081/',
-            'ck_fb94ebcd161b6ad4b376e29a7eec108c9c3babe2',
-            'cs_e3a99fb8bfdc0544de27b6adada9c47083c96d16',
+            $url,
+            $key,
+            $secret,
             [
                 'version' => 'wc/v3',
                 'verify_ssl' => false,

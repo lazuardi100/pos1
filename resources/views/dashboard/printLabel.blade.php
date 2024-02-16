@@ -13,8 +13,27 @@
             /* size with width 4cm and height same as content */
             size: 2.85cm 2.85cm;
             margin: 3px;
-            }
         }
+
+        .print-content {
+            width: 100%; /* Set width to 100% */
+            height: 0; /* Set height to 0 */
+            padding-bottom: calc(100% / 1); /* Aspect ratio of A4 paper (ISO 216) */
+            position: relative; /* Establish relative positioning */
+        }
+
+        .print-content > * {
+                /* Position elements relatively */
+            position: relative;
+            /* Ensure elements don't exceed container */
+            max-width: 100%;
+            max-height: 100%;
+            /* Add padding to create space between elements */
+            padding: 5px;
+            /* Add box-sizing for proper calculation of width and height */
+            box-sizing: border-box;
+        }
+    }
         
     .label{
        
@@ -74,15 +93,17 @@
         margin: 4cm;
         padding: 3px;
     }
+
+    .canvas-barcode {
+        width: 100%;
+    }
 </style>
 </head>
 
 <body>
-{{--@dd($tmp);--}}
 
 @for($i=0;$i<$count;$i++)
     <?php
-    //        dd();
     $random = $tmpas[$i]['product_id'];
     $belakang = explode(" - ",$tmpData[$i]);
 
@@ -135,7 +156,7 @@
     // return;
     ?>
     
-    <div class="label">
+    <div class="label print-content">
         <div class="wrapper">
             <div class="barcode">
                 <canvas id={{$gabung}} class="canvas-barcode"></canvas>
@@ -153,8 +174,7 @@
             <!--    <br>  {{$ukuran}}-->
             <!--</div>-->
         </div>
-        <p style='font-size:8px'>{!! $cut_text.'<br>'.$sambungan['1'] !!}</p>
-                <!--<p>{{$tmpData[$i]}}</p>-->
+        <p style='font-size:8px' class="mb-0 truncate-text">{!! $cut_text.'<br>'.$sambungan['1'] !!}</p>
 
         <div class="price">
             <?php
@@ -188,12 +208,32 @@
         format: "CODE128",
         lineColor: "#000",
         width: 1,
-        height: 30,
+        height: 40,
         displayValue: false,
         margin: 0
         });
     });
 
+</script>
+
+<script>
+    function truncateTextAfterTwoLines(element) {
+        const lineHeight = parseInt(window.getComputedStyle(element).lineHeight); // Get line height
+        const maxHeight = lineHeight * 2; // Calculate max height for two lines
+        if (element.offsetHeight > maxHeight) { // Check if content exceeds two lines
+            const text = element.textContent.trim(); // Get text content
+            const truncatedText = text.substring(0, Math.floor((element.offsetWidth / lineHeight) * 2)); // Truncate text
+            element.textContent = truncatedText.trim() + '...'; // Add ellipsis
+        }
+    }
+
+    // Call the function on window load
+    window.onload = function() {
+        const elements = document.getElementsByClassName('truncate-text');
+        for (let i = 0; i < elements.length; i++) {
+            truncateTextAfterTwoLines(elements[i]);
+        }
+    };
 </script>
 </body>
 

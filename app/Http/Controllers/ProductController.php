@@ -129,7 +129,7 @@ class ProductController extends Controller
 
         $a = $woocommerce->http->getResponse();
         $headers = $a->getHeaders();
-        if (app()->environment('local')) {
+        if (env('APP_ENV_REAL') == 'local') {
             $totalPages = $headers['X-WP-TotalPages'];
             $total = $headers['X-WP-Total'];
         } else {
@@ -171,7 +171,7 @@ class ProductController extends Controller
 
         $a = $woocommerce->http->getResponse();
         $headers = $a->getHeaders();
-        if (app()->environment('local')) {
+        if (env('APP_ENV_REAL') == 'local') {
             $totalPages = $headers['X-WP-TotalPages'];
             $total = $headers['X-WP-Total'];
         } else {
