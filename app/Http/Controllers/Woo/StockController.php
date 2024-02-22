@@ -95,6 +95,6 @@ class StockController extends Controller
         ];
 
         $woocommerce->put('products/'.$request->product_id.'/variations/'.$request->variation_id, $data);
-        return redirect()->route('products.stock.variant.index', $request->product_id);
+        return redirect()->route('products.stock.index');
     }
 }
