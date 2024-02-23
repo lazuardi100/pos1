@@ -40,7 +40,26 @@
           <tr>
             <td>{{ $loop->iteration }}</td>
             <td>{{ $product->name }}</td>
-            <td>{{ $product->stock_status }}</td>
+            <td>
+              @if ($product->stock_status == 'outofstock')
+                @php
+                  $class = 'badge badge-danger';
+                @endphp
+                @elseif($product->stock_status == 'instock')
+                @php
+                  $class = 'badge badge-success';
+                @endphp
+                @elseif($product->stock_status == 'onbackorder')
+                @php
+                  $class = 'badge badge-warning';
+                @endphp
+                @else
+                @php
+                  $class = 'badge badge-secondary';
+                @endphp
+              @endif
+              <span class="{{ $class }}">{{ $product->stock_status }}</span>
+            </td>
             <td>{{ $product->stock_quantity }}</td>
             <td>{{ $product->type }}</td>
             <td>
@@ -61,6 +80,7 @@
                     <thead>
                       <tr>
                         <th>Variant</th>
+                        <th>stock status</th>
                         <th>Stock</th>
                         <th>Action</th>
                       </tr>
@@ -69,6 +89,26 @@
                       @foreach ($variants as $variant)
                         <tr>
                           <td>{{ $variant->attributes[0]->option }}</td>
+                          <td>
+                            @if ($variant->stock_status == 'outofstock')
+                              @php
+                                $class = 'badge badge-danger';
+                              @endphp
+                              @elseif($variant->stock_status == 'instock')
+                              @php
+                                $class = 'badge badge-success';
+                              @endphp
+                              @elseif($variant->stock_status == 'onbackorder')
+                              @php
+                                $class = 'badge badge-warning';
+                              @endphp
+                              @else
+                              @php
+                                $class = 'badge badge-secondary';
+                              @endphp
+                            @endif
+                            <span class="{{ $class }}">{{ $variant->stock_status }}</span>
+                          </td>
                           <td>{{ $variant->stock_quantity }}</td>
                           <td>
                             <a href="{{ route('products.stock.variant.show', [$product->id, $variant->id]) }}"
