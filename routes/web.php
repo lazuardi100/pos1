@@ -105,6 +105,26 @@ Route::middleware(['auth'])->group(function () {
         });
     });
 
+    Route::group(['prefix' => 'offline', 'as' => 'offline.', 'middleware'=>'auth'], function (){
+        Route::group(['prefix' => 'business_units', 'as' => 'business_units.'], function(){
+            Route::get('/', [App\Http\Controllers\offline\BusinessUnitController::class, 'index'])->name('index');
+            Route::post('/create', [App\Http\Controllers\offline\BusinessUnitController::class, 'create'])->name('create');
+            Route::post('/store', [App\Http\Controllers\offline\BusinessUnitController::class, 'store'])->name('store');
+            Route::get('/show/{id}', [App\Http\Controllers\offline\BusinessUnitController::class, 'show'])->name('show');
+            Route::post('/update', [App\Http\Controllers\offline\BusinessUnitController::class, 'update'])->name('update');
+            Route::post('/destroy/{id}', [App\Http\Controllers\offline\BusinessUnitController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::group(['prefix' => 'products', 'as' => 'products.'], function(){
+            Route::get('/', [App\Http\Controllers\offline\ProductController::class, 'index'])->name('index');
+            Route::get('/new', [App\Http\Controllers\offline\ProductController::class, 'new'])->name('new');
+            Route::post('/create', [App\Http\Controllers\offline\ProductController::class, 'create'])->name('create');
+            Route::get('/show/{id}', [App\Http\Controllers\offline\ProductController::class, 'show'])->name('show');
+            Route::post('/update', [App\Http\Controllers\offline\ProductController::class, 'update'])->name('update');
+            Route::post('/destroy/{id}', [App\Http\Controllers\offline\ProductController::class, 'destroy'])->name('destroy');
+        });
+    });
+
     Route::group(['prefix'=> 'global_product', 'as'=>'global_product.', 'middleware'=>'auth'], function (){
         Route::get('/add', function(){
             return view('dashboard.global_product.index');

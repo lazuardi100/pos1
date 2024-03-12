@@ -18,6 +18,7 @@ class StockController extends Controller
         $woocommerce = $this->woocommerce();
         $params = [
             'page' => $page,
+            'per_page' => '50',
         ];
 
         if($request->search != null){
@@ -35,7 +36,7 @@ class StockController extends Controller
             $total = $headers['x-wp-total'];
         }
 
-        $array = new Paginator($array, $total, '10', $page, [
+        $array = new Paginator($array, $total, '50', $page, [
             'path' => $request->url(),
             'query' => $request->query(),
         ]);

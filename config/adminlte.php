@@ -414,6 +414,23 @@ return [
                 ],
             ]
         ],
+        ['header' => 'Offline'],
+        [
+            'text'        => 'Offline',
+            'icon'        => 'fas fa-fw fa-tv',
+            'submenu'     => [
+                [
+                    'text'    => 'Products',
+                    'icon'    => 'fas fa-box',
+                    'url'     => 'offline/products',
+                ],
+                [
+                    'text'    => 'Business Units',
+                    'icon'    => 'fas fa-briefcase',
+                    'url'     => 'offline/business_units'
+                ]
+            ]
+        ],
         ['header' => 'Shopify'],
         [
             'text'        => 'Shopify',
