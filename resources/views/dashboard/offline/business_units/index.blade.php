@@ -61,7 +61,7 @@
   <div class="card-footer clearfix">
     <ul class="pagination
       pagination-sm m-0 float-right">
-      {{ $businessUnits->links() }}
+      {{ $businessUnits->links('vendor.pagination.bootstrap-4') }}
     </ul>
   </div>
 

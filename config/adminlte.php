@@ -287,6 +287,11 @@ return [
             'icon'        => 'fas fa-cash-register',
         ],
         [
+            'text'        => 'Offline POS',
+            'url'         => 'offline/pos',
+            'icon'        => 'fas fa-cash-register',
+        ],
+        [
             'text'        => 'Dashboard',
             'url'         => '/home',
             'icon'        => 'fas fa-folder',

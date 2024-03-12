@@ -21,7 +21,9 @@ class HomeController extends Controller
         // $woocommerce = $this->woocommerce();
         // // dd($woocommerce->get('customers'));
         // dd($woocommerce->delete('customers/6', ['force' => true]));
-        $data = Transaction::with(['customers','carts'])->orderBy('created_at','desc')->get();
+        $data = Transaction::join('customers','transactions.customer_id','=','customers.customer_id')
+            ->join('carts','transactions.id','=','carts.transaction_id')
+            ->orderBy('transactions.created_at','desc')->get();
 
         // dd($data);
         view()->share([

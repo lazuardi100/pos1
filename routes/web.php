@@ -123,6 +123,19 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/update', [App\Http\Controllers\offline\ProductController::class, 'update'])->name('update');
             Route::post('/destroy/{id}', [App\Http\Controllers\offline\ProductController::class, 'destroy'])->name('destroy');
         });
+
+        Route::group(['prefix' => 'pos', 'as' => 'pos.'], function(){
+            Route::get('/', [App\Http\Controllers\offline\PosController::class, 'index'])->name('index');
+        });
+
+        Route::group(['prefix' => 'cart', 'as' => 'cart.'], function(){
+            Route::get('/add', [App\Http\Controllers\offline\CartController::class, 'add'])->name('add');
+            Route::get('/update', [App\Http\Controllers\offline\CartController::class, 'update'])->name('update');
+            Route::get('/destroy/{id}', [App\Http\Controllers\offline\CartController::class, 'destroy'])->name('destroy');
+            Route::get('/update_qty', [App\Http\Controllers\offline\CartController::class, 'update_qty'])->name('update_qty');
+            Route::get('/update_customer', [App\Http\Controllers\offline\CartController::class, 'update_customer'])->name('update_customer');
+            Route::get('/create_order', [App\Http\Controllers\offline\CartController::class, 'create_order'])->name('create_order');
+        });
     });
 
     Route::group(['prefix'=> 'global_product', 'as'=>'global_product.', 'middleware'=>'auth'], function (){
