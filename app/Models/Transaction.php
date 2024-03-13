@@ -12,6 +12,10 @@ class Transaction extends Model
     public function customers(){
         return $this->belongsTo(Customer::class,'customer_id','customer_id');
     }
+
+    public function offline_customer(){
+        return $this->belongsTo(Customer::class,'customer_id','id');
+    }
     public function carts(){
         return$this->hasMany(cart::class);
     }

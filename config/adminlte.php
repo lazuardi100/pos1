@@ -433,6 +433,11 @@ return [
                     'text'    => 'Business Units',
                     'icon'    => 'fas fa-briefcase',
                     'url'     => 'offline/business_units'
+                ],
+                [
+                    'text'    => 'Transaction',
+                    'icon'    => 'fas fa-exchange-alt',
+                    'url'     => 'offline/transaction'
                 ]
             ]
         ],

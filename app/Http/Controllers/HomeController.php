@@ -18,11 +18,10 @@ use Illuminate\Support\Facades\Auth;
 class HomeController extends Controller
 {
     public function transaction(){
-        // $woocommerce = $this->woocommerce();
-        // // dd($woocommerce->get('customers'));
-        // dd($woocommerce->delete('customers/6', ['force' => true]));
         $data = Transaction::join('customers','transactions.customer_id','=','customers.customer_id')
             ->join('carts','transactions.id','=','carts.transaction_id')
+            ->select('transactions.*')
+            ->distinct('transactions.id')
             ->orderBy('transactions.created_at','desc')->get();
 
         // dd($data);

@@ -136,6 +136,11 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/update_customer', [App\Http\Controllers\offline\CartController::class, 'update_customer'])->name('update_customer');
             Route::get('/create_order', [App\Http\Controllers\offline\CartController::class, 'create_order'])->name('create_order');
         });
+
+        Route::group(['prefix' => 'transaction', 'as' => 'transaction.'], function(){
+            Route::get('/', [App\Http\Controllers\offline\TransactionController::class, 'index'])->name('index');
+            Route::get('/show/{id}', [App\Http\Controllers\offline\TransactionController::class, 'show'])->name('show');
+        });
     });
 
     Route::group(['prefix'=> 'global_product', 'as'=>'global_product.', 'middleware'=>'auth'], function (){
