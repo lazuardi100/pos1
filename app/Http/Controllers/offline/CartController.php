@@ -80,6 +80,13 @@ class CartController extends Controller
 			return response()->json(['message' => 'Please select customer']);
 		}
 
+		foreach ($cart as $c) {
+			$product = OfflineProduct::find($c->product_id);
+			if ($product->stock < $c->quantity) {
+				return response()->json(['message' => 'Stock ' . $product->name . ' tidak mencukupi']);
+			}
+		}
+
 		$transaction = new Transaction();
 		$transaction->customer_id = $cart[0]->customer_id;
 		$transaction->amount_pay = $request->amount_pay;
@@ -89,6 +96,10 @@ class CartController extends Controller
 		foreach ($cart as $c) {
 			$c->is_checkout = true;
 			$c->transaction_id = $transaction->id;
+
+			$product = OfflineProduct::find($c->product_id);
+			$product->stock -= $c->quantity;
+			$product->save();
 			$c->save();
 		}
 
