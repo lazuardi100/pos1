@@ -494,6 +494,35 @@ class ProductController extends Controller
                 ];
             }
         }
+        $tags = $this->woocommerce()->get('products/tags');
+
+        $selected_tags = [];
+
+        foreach ($tags as $tag) {
+            if (in_array($tag->id, $request->tags)) {
+                $temp = [
+                    'id' => $tag->id,
+                    'name' => $tag->name,
+                    'slug' => $tag->slug
+                ];
+                array_push($selected_tags, $temp);
+            }
+        }
+
+        $categories = $this->woocommerce()->get('products/categories');
+
+        $selected_categories = [];
+
+        foreach ($categories as $category) {
+            if (in_array($category->id, $request->categories)) {
+                $temp = [
+                    'id' => $category->id,
+                    'name' => $category->name,
+                    'slug' => $category->slug
+                ];
+                array_push($selected_categories, $temp);
+            }
+        }
 
         if ( $type == 'simple'){
 
@@ -505,11 +534,8 @@ class ProductController extends Controller
                 'short_description' => $request->dsc,
                 'manage_stock' => 'true',
                 'stock_quantity' => $request->quantity,
-                'categories' => [
-                    [
-                        'id' => $request->category
-                    ]
-                ]
+                'categories' => $selected_categories,
+                'tags' => $selected_tags,
             ];
 
             $ls = $this->woocommerce()->put('products/'.$id,$data);
@@ -522,6 +548,8 @@ class ProductController extends Controller
                 'short_description' => $request->dsc,
                 'manage_stock' => 'true',
                 'stock_quantity' => (int)$request->quantity,
+                'categories' => $selected_categories,
+                'tags' => $selected_tags,
                 // 'categories' => [
                 //     [
                 //         'id' => $request->category

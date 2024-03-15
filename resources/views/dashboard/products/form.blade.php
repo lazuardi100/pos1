@@ -81,10 +81,19 @@
                                         <input type="text" name="price" value="{{($data != null) ? $data->regular_price : ''}} " id="inputName" class="form-control">
                                     </div>
                                     <div class="form-group">
-                                        <label for="inputStatus">Categories</label>
-                                        <select id="inputStatus" name="category" class="form-control custom-select">
+                                        <label for="inputStatus">Categories</label><br>
+                                        {{-- note --}}
+                                        <small>Hold down the Ctrl (windows) / Command (Mac) button to select multiple options.</small>
+                                        @php
+                                            $product_category = [];
+                                            foreach ($data->categories as $category) {
+                                                $product_category[] = $category->id;
+                                            }
+                                        @endphp
+                                        {{-- checkbox --}}
+                                        <select id="inputStatus" name="categories[]" class="form-control custom-select" multiple="multiple">
                                             @foreach($categories as $category)
-                                                @if ($category->id == $data->categories[0]->id)
+                                                @if (in_array($category->id, $product_category))
                                                     <option value="{{$category->id}}" selected>{{$category->name}}</option>
                                                 @else
                                                     <option value="{{$category->id}}" >{{$category->name}}</option>
@@ -94,10 +103,17 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="inputStatus">Tags</label>
+                                        <label for="inputStatus">Tags</label><br>
+                                        <small>Hold down the Ctrl (windows) / Command (Mac) button to select multiple options.</small>
                                         <select id="inputStatus" name="tags[]" class="form-control custom-select" multiple="multiple">
+                                            @php
+                                                $product_tags = [];
+                                                foreach ($data->tags as $tag) {
+                                                    $product_tags[] = $tag->id;
+                                                }
+                                            @endphp
                                             @foreach($tags as $tag)
-                                                @if ($tag->id == $data->tags[0]->id)
+                                                @if (in_array($tag->id, $product_tags))
                                                     <option value="{{$tag->id}}" selected>{{$tag->name}}</option>
                                                 @else
                                                     <option value="{{$tag->id}}" >{{$tag->name}}</option>
