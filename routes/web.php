@@ -68,7 +68,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/printLabel/{type}/{id}', [\App\Http\Controllers\HomeController::class, 'printLabel'])->name('printLabel');
     Route::get('/transaction', [\App\Http\Controllers\HomeController::class, 'transaction'])->name('transaction');
 
-    //Route::group(['prefix'=>'products','as'=>'products.','middleware'=>'auth'], function(){
     Route::group(['prefix' => 'products', 'as' => 'products.', 'middleware' => 'auth'], function () {
         Route::get('/import', [App\Http\Controllers\ProductController::class, 'import'])->name('import');
         Route::post('/importAction', [App\Http\Controllers\ProductController::class, 'importAction'])->name('importAction');
@@ -85,6 +84,14 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/labelPrint', [App\Http\Controllers\ProductController::class, 'labelPrint'])->name('labelPrint');
         Route::get('/clear/label', [App\Http\Controllers\ProductController::class, 'clearLabel'])->name('clear.label');
         Route::get('/label/remove/{id}', [App\Http\Controllers\ProductController::class, 'removeLabel'])->name('remove.label');
+
+        Route::group(['prefix' => 'variant', 'as' => 'variant.'], function () {
+            Route::get('/edit/{id}/{variant_id}', [App\Http\Controllers\ProductController::class, 'editVariant'])->name('edit');
+            Route::post('/update', [App\Http\Controllers\ProductController::class, 'updateVariant'])->name('update');
+            Route::get('/destroy/{id}', [App\Http\Controllers\ProductController::class, 'variantDestroy'])->name('destroy');
+            Route::get('/a/create/{id}', [App\Http\Controllers\ProductController::class, 'variantCreate'])->name('create');
+            Route::post('/a/create/post', [App\Http\Controllers\ProductController::class, 'variantStore'])->name('store');
+        });
 
         Route::group(['prefix' => 'stock', 'as' => 'stock.'], function(){
             Route::get('/', [StockController::class, 'index'])->name('index');

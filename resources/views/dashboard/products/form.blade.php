@@ -41,18 +41,17 @@
                                         </div>
                                     @endif
 
-                                    <div class="form-group">
+                                    {{-- <div class="form-group">
                                         <label for="inputName">Image</label>
-                                        {{--                            <input>--}}
                                         <input type="file" name="image[]" multiple="multiple" id="inputName" class="form-control">
-                                    </div>
+                                    </div> --}}
                                     <div class="form-group">
                                         <label for="inputName">Name</label>
                                         <input type="text" name="name" id="inputName" value="{{($data != null) ? $data->name : ''}}" class="form-control">
                                     </div>
                                     <div class="form-group">
-                                        <label for="inputName">Code</label>
-                                        <input type="text" name="code" id="inputName" class="form-control">
+                                        <label for="inputName">SKU</label>
+                                        <input type="text" name="code" id="inputName" value="{{($data != null) ? $data->sku : ''}}" class="form-control">
                                     </div>
 
 
@@ -75,7 +74,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="inputName">price modal</label>
-                                        <input type="text" name="price_modal" value="{{($data != null) ? $sql->price_modal : ''}}" id="inputName" class="form-control">
+                                        <input type="text" name="price_modal" value="{{($data != null) ? $data->price : ''}}" id="inputName" class="form-control" disabled>
                                     </div>
                                         <div class="form-group">
                                         <label for="inputName">price sale</label>
@@ -84,18 +83,33 @@
                                     <div class="form-group">
                                         <label for="inputStatus">Categories</label>
                                         <select id="inputStatus" name="category" class="form-control custom-select">
-                                            <option value="{{($data != null) ? $data->categories[0]->id : ''}}">{{($data != null) ? $data->categories[0]->name : ''}}</option>
-
                                             @foreach($categories as $category)
-                                                <option value="{{$category->id}}" >{{$category->name}}</option>
+                                                @if ($category->id == $data->categories[0]->id)
+                                                    <option value="{{$category->id}}" selected>{{$category->name}}</option>
+                                                @else
+                                                    <option value="{{$category->id}}" >{{$category->name}}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputStatus">Tags</label>
+                                        <select id="inputStatus" name="tags[]" class="form-control custom-select" multiple="multiple">
+                                            @foreach($tags as $tag)
+                                                @if ($tag->id == $data->tags[0]->id)
+                                                    <option value="{{$tag->id}}" selected>{{$tag->name}}</option>
+                                                @else
+                                                    <option value="{{$tag->id}}" >{{$tag->name}}</option>
+                                                @endif
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="inputStatus">Description</label>
-                                        <textarea id="summernote" name="dsc">
+                                        <textarea id="summernote" name="dsc" class="form-control">
                                             {{($data != null) ? $data->short_description : ''}}
-                                </textarea>
+                                        </textarea>
                                     </div>
                                 </div>
                             </div>
@@ -111,7 +125,6 @@
                                     <div class="form-group" name="ggg" id="ggg">
                                         <label for="inputName">Combo product</label>
                                         <div>
-{{--                                            <p>Text2</p>--}}
                                                 <table class="table table-condensed">
                                                     <thead>
                                                     <tr>
@@ -140,8 +153,6 @@
                                                 </table>
                                         </div>
                                     </div>
-
-
                                 </div>
                         </div>
                         <!-- /.card-body -->
@@ -151,7 +162,7 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <a href="#" class="btn btn-secondary">Cancel</a>
+                    <a href={{route('products.index')}} class="btn btn-secondary">Cancel</a>
                     <button type="submit" class="btn btn-success float-right"> Save </button>
                 </div>
             </div>

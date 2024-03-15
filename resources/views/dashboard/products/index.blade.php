@@ -71,22 +71,34 @@
                     <td>{{$product->type}}</td>
                     <td>
                         {!! DNS1D::getBarcodeHTML('dwqdqw', "C128",1.4,22) !!}
-
-{{--                    @foreach($product->tags as $tag)--}}
-{{--                        {{$tag->name}},--}}
-{{--                        @endforeach--}}
-{{--                    </td>--}}
                     <td>
                         <div class="btn-group">
-{{--                            <a href="{{route('printLabel',[$product->type,$product->id])}}" class="btn btn-info">--}}
-{{--                                <i class="fas fa-file"></i>--}}
-{{--                            </a>--}}
-{{--                            <button type="button" class="btn btn-info">--}}
-{{--                                <i class="fas fa-image"></i>--}}
-{{--                            </button>--}}
-                            <a href="{{route('products.edit',$product->id)}}" type="button" class="btn btn-warning">
-                                <i class="fas fa-edit"></i>
-                            </a>
+                            @if ($product->type != 'variable')
+                                <a href="{{route('products.edit',$product->id)}}" type="button" class="btn btn-warning">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            @else
+                                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                @php
+                                    $base = new \App\Http\Controllers\Controller();
+                                    $woo = $base->woocommerce();
+                                    $variants = $woo->get('products/' . $product->id . '/variations');
+                                @endphp
+
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href={{route('products.edit',$product->id)}}>
+                                        Master Product
+                                    </a>
+                                    @foreach ($variants as $variant)
+                                        <a class="dropdown-item" href={{route('products.variant.edit',[$product->id,$variant->id])}}>
+                                            {{$variant->attributes[0]->option}}
+                                        </a>
+                                    @endforeach
+                                </div>
+                            @endif
                             <a href="{{route('products.destroys',$product->id)}}" onclick="return confirm(`Are you sure?`)">
                                 <button type="button" class="btn btn-danger">
                                     <i class="fas fa-trash"></i>

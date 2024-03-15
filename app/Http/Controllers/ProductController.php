@@ -9,8 +9,10 @@ use Carbon\Carbon;
 use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use PhpExcelReader;
+use Ramsey\Collection\Collection;
 use Spreadsheet_Excel_Reader;
 
 //use Spreadsheet_Excel_Reader;
@@ -188,8 +190,7 @@ class ProductController extends Controller
         // dd($array);
         //        dd($data);
         view()->share([
-            'products' => $array,
-            'convert' => $this->convertUSD()
+            'products' => $array
         ]);
         return view('dashboard.products.index');
     }
@@ -405,7 +406,7 @@ class ProductController extends Controller
         $categories = $this->woocommerce()->get('products/categories');
         $tags = $this->woocommerce()->get('products/tags');
 
-        //        dd($categories);
+        // dd($tags, $data, $data->tags);
         view()->share([
             'categories' => $categories,
             'tags' => $tags,
@@ -413,6 +414,52 @@ class ProductController extends Controller
             'sql' => $sql
         ]);
         return view('dashboard.products.form');
+    }
+
+    public function editVariant($id, $variant_id){
+        $variant = $this->woocommerce()->get('products/'.$id.'/variations/'.$variant_id);
+
+        $data = $this->woocommerce()->get('products/'.$id);
+
+        $categories = $this->woocommerce()->get('products/categories');
+        $tags = $this->woocommerce()->get('products/tags');
+
+        // dd($variant, $data, $categories, $tags);
+
+        return view('dashboard.products.variants.edit', compact('variant', 'data', 'categories', 'tags'));
+    }
+
+    public function updateVariant(Request $request){
+        $id = $request->id;
+        $variant_id = $request->variant_id;
+        $woocommerce = $this->woocommerce();
+
+        $variant = $this->woocommerce()->get('products/'.$id.'/variations/'.$variant_id);
+        
+        if ($variant->sku != $request->code) {
+            $data = [
+                'sku' => $request->code
+            ];
+            $woocommerce->put('products/'.$id.'/variations/'.$variant_id, $data);
+        }
+
+        $data = [
+            'regular_price' => $request->price,
+            'manage_stock' => 'true',
+            'stock_quantity' => $request->quantity,
+            'description' => $request->dsc == null ? '' : $request->dsc,
+            'attributes' => [
+                [
+                    'id' => $variant->attributes[0]->id,
+                    'name' => 'Size',
+                    'option' => $request->name
+                ]
+            ]
+        ];
+        // dd($data);
+        $woocommerce->put('products/'.$id.'/variations/'.$variant_id, $data);
+
+        return redirect()->route('products.index')->with('success','success edit data');
     }
 
     /**
@@ -433,7 +480,6 @@ class ProductController extends Controller
         $tmpUrl = [];
         $i= 0;
 
-        dd($cek);
         if ($request->file('image')){
             $files = $request->file('image');
             foreach ($files as $file) {
@@ -448,7 +494,6 @@ class ProductController extends Controller
                 ];
             }
         }
-
 
         if ( $type == 'simple'){
 
@@ -473,83 +518,66 @@ class ProductController extends Controller
             $data = [
                 'name' => $request->name,
                 'type' => $type,
-                'regular_price' => $request->price,
-                'price' => $request->price,
                 'description' => $request->dsc,
                 'short_description' => $request->dsc,
                 'manage_stock' => 'true',
                 'stock_quantity' => (int)$request->quantity,
-                'categories' => [
-                    [
-                        'id' => $request->category
-                    ]
-                ],
-                'attributes' => array(
-                    array(
-                        'name' => 'Size',
-                        'position' => 0,
-                        'visible' => true, // default: false
-                        'variation' => true, // default: false
-                        'options' => $jenis_input
-                    ),
-                ),
-//                'price_html' => '<span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#36;</span>22</bdi></span>'
+                // 'categories' => [
+                //     [
+                //         'id' => $request->category
+                //     ]
+                // ],
+                // 'attributes' => array(
+                //     array(
+                //         'name' => 'Size',
+                //         'position' => 0,
+                //         'visible' => true, // default: false
+                //         'variation' => true, // default: false
+                //         'options' => $jenis_input
+                //     ),
+                // ),
             ];
 
-
-            $ls = $this->woocommerce()->post('products', $data);
-
-//            dd($ls);
-
-            $datas = [
-                'type' => 'variable'
-            ];
-
-            $woocommerce->put('products/'.$ls ->id, $datas);
-//            dd($woocommerce->put('products/'.$ls ->id, $datas));
-
+            // dd($data, $request->all());
+            $ls = $this->woocommerce()->put('products/'.$id,$data);
 
             $itung = count($request->jumlah_input);
 
-//            dd($jenis_input);
-            for ($i = 0 ; $i<$itung; $i++){
+//             for ($i = 0 ; $i<$itung; $i++){
 
-                $tmps = $jenis_input[$i];
+//                 $tmps = $jenis_input[$i];
 
-                $sku = 'sku-0';
-                if ($jenis_input[$i] = 's'){
-                    $sku = 'sku-1';
-                }elseif ($jenis_input[$i] = 'm'){
-                    $sku = 'sku-2';
-                }elseif ($jenis_input[$i] = 'l'){
-                    $sku = 'sku-3';
-                }elseif ($jenis_input[$i] = 'xl'){
-                    $sku = 'sku-4';
-                }elseif ($jenis_input[$i] = 'xxl'){
-                    $sku = 'sku-5';
-                }elseif ($jenis_input[$i] = 'xxxl'){
-                    $sku = 'sku-6';
-                }
+//                 $sku = 'sku-0';
+//                 if ($jenis_input[$i] = 's'){
+//                     $sku = 'sku-1';
+//                 }elseif ($jenis_input[$i] = 'm'){
+//                     $sku = 'sku-2';
+//                 }elseif ($jenis_input[$i] = 'l'){
+//                     $sku = 'sku-3';
+//                 }elseif ($jenis_input[$i] = 'xl'){
+//                     $sku = 'sku-4';
+//                 }elseif ($jenis_input[$i] = 'xxl'){
+//                     $sku = 'sku-5';
+//                 }elseif ($jenis_input[$i] = 'xxxl'){
+//                     $sku = 'sku-6';
+//                 }
 
-                $dataVariant = [
-                    'attributes' => [
-                        [
-                            'name' => 'Size' ,
-                            'option' => $tmps
-                        ]
-                    ],
-                    'regular_price' => $request->price,
-                    'manage_stock' => 'true',
-                    'stock_quantity' => (int) $jumlah_input[$i],
-//                    'sku' => $sku
-                ];
-//                dd($dataVariant);
+//                 $dataVariant = [
+//                     'attributes' => [
+//                         [
+//                             'name' => 'Size' ,
+//                             'option' => $tmps
+//                         ]
+//                     ],
+//                     'regular_price' => $request->price,
+//                     'manage_stock' => 'true',
+//                     'stock_quantity' => (int) $jumlah_input[$i],
+// //                    'sku' => $sku
+//                 ];
 
-                $woocommerce->post('products/'.$ls->id.'/variations', $dataVariant);
+//                 $woocommerce->post('products/'.$ls->id.'/variations', $dataVariant);
 
-
-//                sampe sini
-            }
+//             }
 
 
         }
@@ -557,13 +585,12 @@ class ProductController extends Controller
 
         $new = Product::where('api_product_api','=',$id)->first();
 
-        $new->price_modal = $request->price_modal;
-        $new->price_sale = $request->price;
+        $new->price_modal = $request->price_modal == null ? 0 : $request->price_modal;
+        $new->price_sale = $request->price == null ? 0 : $request->price;
         $new->barcode = $request->barcode;
         $new->save();
 
         return redirect()->route('products.index')->with('success','success edit data');
-
     }
 
     /**
