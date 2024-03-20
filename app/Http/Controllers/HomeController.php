@@ -18,10 +18,9 @@ use Illuminate\Support\Facades\Auth;
 class HomeController extends Controller
 {
     public function transaction(){
-        $data = Transaction::join('customers','transactions.customer_id','=','customers.customer_id')
-            ->join('carts','transactions.id','=','carts.transaction_id')
+        $data = Transaction::join('carts','transactions.id','=','carts.transaction_id')
             ->select('transactions.*')
-            ->distinct('transactions.id')
+            ->distinct('transactions.*')
             ->orderBy('transactions.created_at','desc')->get();
 
         // dd($data);

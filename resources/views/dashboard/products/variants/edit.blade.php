@@ -47,8 +47,9 @@
                   </div>
                   <div class="form-group">
                     <label for="inputName">SKU</label>
-                    <input type="text" name="code" id="inputName" value="{{ $variant->sku }}"
+                    <input type="text" name="code" id="sku" value="{{ $variant->sku }}"
                       class="form-control">
+                    <button type="button" class="btn btn-primary" id="generate-sku">Generate SKU</button>
                   </div>
 
 
@@ -113,4 +114,16 @@
         </div>
     </form>
   </section>
+@endsection
+
+@section('js')
+  <script>
+    $(document).ready(function () {
+      $('#generate-sku').click(function () {
+        var sku = Math.floor(1000000000000000 + Math.random() * 9000000000000000);
+        $('#sku').val(sku);
+      });
+    });
+
+  </script>
 @endsection
